@@ -10,22 +10,36 @@ interface ClientLayoutProps {
 
 export default function ClientLayout({ children }: ClientLayoutProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const toggleSidebarCollapse = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+  };
+
   return (
     <div className="flex h-screen">
-      <Sidebar isOpen={isSidebarOpen} />
+      <Sidebar 
+        isOpen={isSidebarOpen} 
+        isCollapsed={isSidebarCollapsed}
+        onToggleCollapse={toggleSidebarCollapse}
+      />
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-30"
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
           onClick={toggleSidebar}
         />
       )}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header isSidebarOpen={isSidebarOpen} onToggleSidebar={toggleSidebar} />
+        <Header 
+          isSidebarOpen={isSidebarOpen} 
+          onToggleSidebar={toggleSidebar}
+          isSidebarCollapsed={isSidebarCollapsed}
+          onToggleSidebarCollapse={toggleSidebarCollapse}
+        />
         <main className="flex-1 overflow-auto">
           {children}
         </main>

@@ -7,7 +7,8 @@ import {
   HiOutlineCheckCircle,
   HiOutlineChartBar,
   HiOutlineLightningBolt,
-  HiOutlineChat
+  HiOutlineChat,
+  HiOutlineHand
 } from 'react-icons/hi';
 
 export default function Home() {
@@ -16,8 +17,8 @@ export default function Home() {
       {/* Welcome Section */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-text-primary mb-2">
-            Доброе утро! 👋
+          <h1 className="text-3xl font-bold text-text-primary mb-2 flex items-center gap-2">
+            Доброе утро! <HiOutlineHand />
           </h1>
           <p className="text-text-secondary">
             Давайте организуем ваши мысли и повысим продуктивность сегодня.
