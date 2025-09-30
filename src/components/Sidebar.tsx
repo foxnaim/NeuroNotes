@@ -63,8 +63,8 @@ export default function Sidebar({ isOpen, isCollapsed = false, onToggleCollapse 
         )}
       </button>
 
-      {/* Navigation */}
-      <div className="flex-1">
+      {/* Navigation (vertically centered between Quick Note and AI status) */}
+      <div className="flex-1 flex flex-col justify-center">
         {!isCollapsed && (
           <h2 className="text-text-secondary text-xs font-semibold uppercase tracking-wider mb-4">
             НАВИГАЦИЯ
@@ -84,16 +84,16 @@ export default function Sidebar({ isOpen, isCollapsed = false, onToggleCollapse 
                   if (item.id === 'ai') router.push('/ai');
                   if (item.id === 'settings') router.push('/settings');
                 }}
-                className={`w-full flex items-center p-3 rounded-lg transition-all ${
+                className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'justify-start'} gap-3 p-3 rounded-lg transition-all ${
                   activeItem === item.id
                     ? 'bg-gradient-to-r from-primary to-secondary text-white'
                     : 'text-text-primary hover:bg-surface'
-                } ${isCollapsed ? 'justify-center' : ''}`}
+                }`}
                 title={isCollapsed ? item.label : undefined}
               >
-                <IconComponent className="text-lg" />
+                <IconComponent className="text-xl" />
                 {!isCollapsed && (
-                  <span className="font-medium ml-3">{item.label}</span>
+                  <span className="font-medium text-center">{item.label}</span>
                 )}
               </button>
             );

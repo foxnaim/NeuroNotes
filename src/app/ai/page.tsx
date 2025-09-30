@@ -35,7 +35,7 @@ function QuickAction({ icon, title, subtitle }: { icon: React.ReactNode; title: 
 
 export default function AIPage() {
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
@@ -50,7 +50,7 @@ export default function AIPage() {
       </div>
 
       {/* Layout */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
         {/* Chat column */}
         <div className="xl:col-span-2 space-y-4">
           <div className="bg-surface border border-border rounded-2xl p-6 min-h-[420px] md:min-h-[520px]">

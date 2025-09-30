@@ -84,7 +84,7 @@ function TaskCard({
 
 export default function TasksPage() {
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
@@ -104,7 +104,7 @@ export default function TasksPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
         <Stat label="Все" value={5} />
         <Stat label="К Выполнению" value={2} />
         <Stat label="В Процессе" value={1} icon={<HiOutlineClock />} accent="yellow" />
@@ -129,7 +129,7 @@ export default function TasksPage() {
       </div>
 
       {/* Tasks list */}
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         <TaskCard
           title="Просмотреть и обновить документацию проекта"
           description="Пройти по всей документации проекта и убедиться, что она актуальна с последними изменениями"

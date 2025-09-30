@@ -10,7 +10,7 @@ import {
 
 export default function NotesPage() {
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
       {/* Header row: title + action */}
       <div className="flex items-start justify-between">
         <div>
@@ -24,11 +24,11 @@ export default function NotesPage() {
       </div>
 
       {/* Search row */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
         <div className="flex-1 relative">
           <HiOutlineSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary" />
           <input
-            className="w-full h-12 bg-surface border border-border rounded-full pl-12 pr-4 text-text-primary placeholder:text-text-secondary/70 focus:outline-none"
+            className="w-full h-12 bg-surface border border-border rounded-full pl-12 pr-3 sm:pr-4 text-text-primary placeholder:text-text-secondary/70 focus:outline-none"
             placeholder="Поиск заметок, тегов или содержимого..."
           />
         </div>
@@ -38,7 +38,7 @@ export default function NotesPage() {
         >
           <HiOutlineAdjustments className="text-text-primary" />
         </button>
-        <button className="h-12 px-5 bg-surface border border-border rounded-full hover:bg-gray-50 transition-colors flex items-center gap-2">
+        <button className="h-12 px-5 bg-surface border border-border rounded-full hover:bg-gray-50 transition-colors hidden sm:inline-flex items-center gap-2">
           <HiOutlineSparkles className="text-text-primary" />
           <span className="text-text-primary font-medium">ИИ поиск</span>
         </button>
@@ -62,7 +62,7 @@ export default function NotesPage() {
       </div>
 
       {/* Notes grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
         {[1,2,3].map((i) => (
           <div key={i} className="bg-surface border border-border rounded-xl p-5">
             <div className="flex items-center justify-between mb-3">

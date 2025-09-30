@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HiOutlineUser, HiOutlineSparkles, HiOutlineBell, HiOutlinePuzzle, HiOutlineShieldCheck, HiOutlineColorSwatch } from 'react-icons/hi';
 
 type TabKey = 'profile' | 'ai' | 'notifications' | 'integrations' | 'privacy';
@@ -33,13 +33,34 @@ function TabBar({ active, onChange }: { active: TabKey; onChange: (t: TabKey) =>
 
 export default function SettingsClient() {
   const [active, setActive] = useState<TabKey>('profile');
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handler = () => setIsFullscreen(Boolean(document.fullscreenElement));
+    document.addEventListener('fullscreenchange', handler);
+    setIsFullscreen(Boolean(document.fullscreenElement));
+    return () => document.removeEventListener('fullscreenchange', handler);
+  }, []);
+
+  const toggleFullscreen = async () => {
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      } else if (document.exitFullscreen) {
+        await document.exitFullscreen();
+      }
+    } catch (e) {
+      // swallow silently; could show toast in real app
+      console.error('Fullscreen toggle failed', e);
+    }
+  };
   return (
     <div className="space-y-6">
       <TabBar active={active} onChange={setActive} />
 
       {active === 'profile' && (
         <>
-          <section className="bg-surface border border-border rounded-2xl p-6 space-y-6">
+          <section className="bg-surface border border-border rounded-2xl p-4 sm:p-6 space-y-6">
             <h2 className="text-2xl font-semibold text-text-primary flex items-center gap-2"><HiOutlineUser /> Информация профиля</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -61,16 +82,17 @@ export default function SettingsClient() {
           </section>
 
           {/* Appearance section */}
-          <section className="bg-surface border border-border rounded-2xl p-6 space-y-5">
+          <section className="bg-surface border border-border rounded-2xl p-4 sm:p-6 space-y-5">
             <h3 className="text-2xl font-semibold text-text-primary flex items-center gap-2"><HiOutlineColorSwatch /> Внешний вид</h3>
-            <ToggleRow title="Темная тема" desc="В настоящее время используется темная тема для продуктивности" defaultChecked />
-            <ToggleRow title="Компактный режим" desc="Показать больше контента в меньшем пространстве" />
+            <SwitchRow title="Темная тема" desc="В настоящее время используется темная тема для продуктивности" defaultChecked />
+            <SwitchRow title="Компактный режим" desc="Показать больше контента в меньшем пространстве" />
+            <SwitchRow title="Полноэкранный режим" desc="Развернуть интерфейс на весь экран" checked={isFullscreen} onChange={toggleFullscreen} />
           </section>
         </>
       )}
 
       {active === 'ai' && (
-        <section className="bg-surface border border-border rounded-2xl p-6 space-y-5">
+        <section className="bg-surface border border-border rounded-2xl p-4 sm:p-6 space-y-5">
           <h2 className="text-2xl font-semibold text-text-primary flex items-center gap-2"><HiOutlineSparkles /> Настройки ИИ помощника</h2>
           <ToggleRow title="Автоанализ заметок" desc="Автоматически генерировать резюме и инсайты для новых заметок" defaultChecked />
           <ToggleRow title="Умное создание задач" desc="Предлагать задачи на основе содержания заметок" defaultChecked />
@@ -87,7 +109,7 @@ export default function SettingsClient() {
       )}
 
       {active === 'notifications' && (
-        <section className="bg-surface border border-border rounded-2xl p-6 space-y-5">
+        <section className="bg-surface border border-border rounded-2xl p-4 sm:p-6 space-y-5">
           <h2 className="text-2xl font-semibold text-text-primary flex items-center gap-2"><HiOutlineBell /> Настройки уведомлений</h2>
           <ToggleRow title="Напоминания о задачах" desc="Получать уведомления о приближающихся сроках" defaultChecked />
           <ToggleRow title="ИИ инсайты" desc="Еженедельные инсайты и предложения по продуктивности" defaultChecked />
@@ -97,7 +119,7 @@ export default function SettingsClient() {
       )}
 
       {active === 'integrations' && (
-        <section className="bg-surface border border-border rounded-2xl p-6 space-y-5">
+        <section className="bg-surface border border-border rounded-2xl p-4 sm:p-6 space-y-5">
           <h2 className="text-2xl font-semibold text-text-primary flex items-center gap-2"><HiOutlinePuzzle /> Подключенные сервисы</h2>
           <IntegrationRow name="Google Календарь" desc="Синхронизировать задачи с вашим календарем" action="Подключить" />
           <IntegrationRow name="GitHub" desc="Импортировать задачи и заметки проекта" action="Подключить" />
@@ -134,6 +156,26 @@ function ToggleRow({ title, desc, defaultChecked }: { title: string; desc: strin
         <div className="text-text-secondary text-sm">{desc}</div>
       </div>
       <input type="checkbox" defaultChecked={defaultChecked} className="h-6 w-10 rounded-full accent-primary" />
+    </div>
+  );
+}
+
+function SwitchRow({ title, desc, defaultChecked, checked, onChange }: { title: string; desc: string; defaultChecked?: boolean; checked?: boolean; onChange?: () => void }) {
+  return (
+    <div className="flex items-center justify-between">
+      <div>
+        <div className="text-text-primary font-medium">{title}</div>
+        <div className="text-text-secondary text-sm">{desc}</div>
+      </div>
+      <button
+        onClick={onChange}
+        aria-pressed={checked}
+        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${checked ?? defaultChecked ? 'bg-primary/80' : 'bg-gray-300'}`}
+      >
+        <span
+          className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform ${checked ?? defaultChecked ? 'translate-x-5' : 'translate-x-1'}`}
+        />
+      </button>
     </div>
   );
 }

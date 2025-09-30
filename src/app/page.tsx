@@ -13,23 +13,23 @@ import {
 
 export default function Home() {
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
       {/* Welcome Section */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-text-primary mb-2 flex items-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-text-primary mb-1 sm:mb-2 flex items-center gap-2">
             Доброе утро! <HiOutlineHand />
           </h1>
           <p className="text-text-secondary">
             Давайте организуем ваши мысли и повысим продуктивность сегодня.
           </p>
         </div>
-        <div className="flex gap-3">
-          <button className="bg-surface border border-border rounded-lg px-4 py-2 flex items-center gap-2 hover:bg-gray-50 transition-colors">
+        <div className="flex flex-wrap gap-2 sm:gap-3">
+          <button className="bg-surface border border-border rounded-lg px-3 sm:px-4 py-2 flex items-center gap-2 hover:bg-gray-50 transition-colors">
             <HiOutlinePlus className="text-text-primary" />
             <span className="text-text-primary font-medium">Быстрая заметка</span>
           </button>
-          <button className="bg-gradient-to-r from-primary to-secondary text-white rounded-lg px-4 py-2 flex items-center gap-2 hover:opacity-90 transition-opacity">
+          <button className="bg-gradient-to-r from-primary to-secondary text-white rounded-lg px-3 sm:px-4 py-2 flex items-center gap-2 hover:opacity-90 transition-opacity">
             <HiOutlineSparkles />
             <span className="font-medium">Спросить ИИ</span>
           </button>
@@ -37,7 +37,7 @@ export default function Home() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
         <div className="bg-surface border border-border rounded-lg p-6 relative">
           <div className="absolute top-4 right-4 text-text-secondary">
             <HiOutlineDocumentText className="text-xl" />
