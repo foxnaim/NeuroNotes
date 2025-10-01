@@ -1,5 +1,8 @@
 
 
+"use client";
+
+import { useState } from 'react';
 import { 
   HiOutlinePlus, 
   HiOutlineSparkles,
@@ -12,6 +15,12 @@ import {
 } from 'react-icons/hi';
 
 export default function Home() {
+  const [isQuickOpen, setIsQuickOpen] = useState(false);
+  const [isAskAiOpen, setIsAskAiOpen] = useState(false);
+  const [quickTitle, setQuickTitle] = useState('');
+  const [quickText, setQuickText] = useState('');
+  const [ask, setAsk] = useState('');
+  const [answer, setAnswer] = useState<string | null>(null);
   return (
     <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
       {/* Welcome Section */}
@@ -25,16 +34,51 @@ export default function Home() {
           </p>
         </div>
         <div className="flex flex-wrap gap-2 sm:gap-3">
-          <button className="bg-surface border border-border rounded-lg px-3 sm:px-4 py-2 flex items-center gap-2 hover:bg-gray-50 transition-colors">
+          <button onClick={() => setIsQuickOpen(true)} className="bg-surface border border-border rounded-lg px-3 sm:px-4 py-2 flex items-center gap-2 hover:bg-gray-50 transition-colors">
             <HiOutlinePlus className="text-text-primary" />
             <span className="text-text-primary font-medium">Быстрая заметка</span>
           </button>
-          <button className="bg-gradient-to-r from-primary to-secondary text-white rounded-lg px-3 sm:px-4 py-2 flex items-center gap-2 hover:opacity-90 transition-opacity">
+          <button onClick={() => setIsAskAiOpen(true)} className="bg-gradient-to-r from-primary to-secondary text-white rounded-lg px-3 sm:px-4 py-2 flex items-center gap-2 hover:opacity-90 transition-opacity">
             <HiOutlineSparkles />
             <span className="font-medium">Спросить ИИ</span>
           </button>
         </div>
       </div>
+
+      {isQuickOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setIsQuickOpen(false)} />
+          <div className="relative bg-surface border border-border rounded-2xl p-5 w-full max-w-xl">
+            <div className="text-text-primary font-semibold text-lg mb-3">Быстрая заметка</div>
+            <div className="space-y-3">
+              <input className="w-full h-11 bg-surface border border-border rounded-lg px-3 text-text-primary focus:outline-none" placeholder="Заголовок" value={quickTitle} onChange={(e)=>setQuickTitle(e.target.value)} />
+              <textarea className="w-full min-h-32 bg-surface border border-border rounded-lg px-3 py-2 text-text-primary focus:outline-none" placeholder="Текст" value={quickText} onChange={(e)=>setQuickText(e.target.value)} />
+              <div className="flex justify-end gap-3">
+                <button className="h-10 px-4 bg-surface border border-border rounded-full" onClick={()=>setIsQuickOpen(false)}>Отмена</button>
+                <button className="h-10 px-4 bg-gradient-to-r from-primary to-secondary text-white rounded-full" onClick={()=>{ setQuickTitle(''); setQuickText(''); setIsQuickOpen(false); }}>Сохранить</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isAskAiOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setIsAskAiOpen(false)} />
+          <div className="relative bg-surface border border-border rounded-2xl p-5 w-full max-w-2xl">
+            <div className="text-text-primary font-semibold text-lg mb-3">Спросить ИИ</div>
+            <div className="space-y-3">
+              <input className="w-full h-11 bg-surface border border-border rounded-lg px-3 text-text-primary focus:outline-none" placeholder="Ваш вопрос" value={ask} onChange={(e)=>setAsk(e.target.value)} />
+              <div className="flex justify-end">
+                <button className="h-10 px-4 bg-gradient-to-r from-primary to-secondary text-white rounded-full" onClick={()=>{ setAnswer(ask ? 'Черновой ответ ИИ: я бы предложил начать с... (демо)' : null); }}>Спросить</button>
+              </div>
+              {answer && (
+                <div className="bg-surface border border-border rounded-lg p-3 text-text-primary">{answer}</div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
