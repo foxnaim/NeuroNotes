@@ -3,13 +3,14 @@
 import { useEffect, useState } from 'react';
 import { HiOutlineUser, HiOutlineSparkles, HiOutlineBell, HiOutlinePuzzle, HiOutlineShieldCheck, HiOutlineColorSwatch } from 'react-icons/hi';
 
-type TabKey = 'profile' | 'ai' | 'notifications' | 'integrations' | 'privacy';
+type TabKey = 'profile' | 'ai' | 'notifications' | 'integrations' | 'privacy' | 'colors';
 
 const tabs: { key: TabKey; label: string }[] = [
   { key: 'profile', label: 'Профиль' },
   { key: 'ai', label: 'ИИ' },
   { key: 'notifications', label: 'Уведомления' },
   { key: 'integrations', label: 'Интеграции' },
+  { key: 'colors', label: 'Цвета' },
   { key: 'privacy', label: 'Конфиденциальность' },
 ];
 
@@ -34,12 +35,57 @@ function TabBar({ active, onChange }: { active: TabKey; onChange: (t: TabKey) =>
 export default function SettingsClient() {
   const [active, setActive] = useState<TabKey>('profile');
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [theme, setTheme] = useState<string>(() => typeof window !== 'undefined' ? (localStorage.getItem('nn-theme') || 'theme-light-neuro') : 'theme-light-neuro');
+  const [custom, setCustom] = useState({
+    background: '',
+    textPrimary: '',
+    textSecondary: '',
+    surface: '',
+    primary: '',
+    secondary: '',
+    border: ''
+  });
 
   useEffect(() => {
     const handler = () => setIsFullscreen(Boolean(document.fullscreenElement));
     document.addEventListener('fullscreenchange', handler);
     setIsFullscreen(Boolean(document.fullscreenElement));
     return () => document.removeEventListener('fullscreenchange', handler);
+  }, []);
+
+  useEffect(() => {
+    // apply theme class on <html>
+    if (typeof document !== 'undefined') {
+      const html = document.documentElement;
+      html.classList.remove('theme-dark','theme-light-neuro','theme-purple-pink','theme-teal-blue');
+      html.classList.add(theme);
+      localStorage.setItem('nn-theme', theme);
+    }
+  }, [theme]);
+
+  useEffect(() => {
+    // apply custom overrides
+    if (typeof document !== 'undefined') {
+      const s = document.documentElement.style as CSSStyleDeclaration & Record<string,string>;
+      if (custom.background) s.setProperty('--color-background', custom.background);
+      if (custom.surface) s.setProperty('--color-surface', custom.surface);
+      if (custom.textPrimary) s.setProperty('--color-text-primary', custom.textPrimary);
+      if (custom.textSecondary) s.setProperty('--color-text-secondary', custom.textSecondary);
+      if (custom.primary) s.setProperty('--color-primary', custom.primary);
+      if (custom.secondary) s.setProperty('--color-secondary', custom.secondary);
+      if (custom.border) s.setProperty('--color-border', custom.border);
+      localStorage.setItem('nn-theme-custom', JSON.stringify(custom));
+    }
+  }, [custom]);
+
+  useEffect(() => {
+    // load custom on mount
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('nn-theme-custom');
+      if (saved) {
+        try { setCustom(JSON.parse(saved)); } catch {}
+      }
+    }
   }, []);
 
   const toggleFullscreen = async () => {
@@ -103,6 +149,36 @@ export default function SettingsClient() {
             <div className="inline-flex items-center gap-2 bg-surface border border-border rounded-full px-3 py-1">
               <span className="text-text-primary">GPT-4 Turbo</span>
               <span className="text-success text-xs bg-success/10 rounded-full px-2 py-0.5">Активный</span>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {active === 'colors' && (
+        <section className="bg-surface border border-border rounded-2xl p-4 sm:p-6 space-y-6">
+          <h2 className="text-2xl font-semibold text-text-primary flex items-center gap-2"><HiOutlineColorSwatch /> Цветовые темы</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <PresetCard name="Тёмная (по умолчанию)" className="theme-dark" active={theme==='theme-dark'} onSelect={() => setTheme('theme-dark')} />
+            <PresetCard name="Светлая нейроморфная" className="theme-light-neuro" active={theme==='theme-light-neuro'} onSelect={() => setTheme('theme-light-neuro')} />
+            <PresetCard name="Фиолетово-розовая" className="theme-purple-pink" active={theme==='theme-purple-pink'} onSelect={() => setTheme('theme-purple-pink')} />
+            <PresetCard name="Бирюзово-синяя" className="theme-teal-blue" active={theme==='theme-teal-blue'} onSelect={() => setTheme('theme-teal-blue')} />
+          </div>
+
+          <div className="pt-2 space-y-3">
+            <h3 className="text-lg font-semibold text-text-primary">Своя тема</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+              <ColorInput label="Фон" value={custom.background} onChange={(v)=>setCustom({ ...custom, background: v })} />
+              <ColorInput label="Поверхность" value={custom.surface} onChange={(v)=>setCustom({ ...custom, surface: v })} />
+              <ColorInput label="Текст (основной)" value={custom.textPrimary} onChange={(v)=>setCustom({ ...custom, textPrimary: v })} />
+              <ColorInput label="Текст (вторичный)" value={custom.textSecondary} onChange={(v)=>setCustom({ ...custom, textSecondary: v })} />
+              <ColorInput label="Primary" value={custom.primary} onChange={(v)=>setCustom({ ...custom, primary: v })} />
+              <ColorInput label="Secondary" value={custom.secondary} onChange={(v)=>setCustom({ ...custom, secondary: v })} />
+              <ColorInput label="Граница" value={custom.border} onChange={(v)=>setCustom({ ...custom, border: v })} />
+            </div>
+            <div className="flex gap-3">
+              <button className="bg-surface border border-border rounded-full px-4 py-2" onClick={()=>{ setCustom({ background:'', textPrimary:'', textSecondary:'', surface:'', primary:'', secondary:'', border:'' }); localStorage.removeItem('nn-theme-custom'); }}>Сбросить кастомизацию</button>
+              <button className="bg-gradient-to-r from-primary to-secondary text-white rounded-full px-5 py-2" onClick={()=>{ /* значения уже сохранены в useEffect */ }}>Сохранить</button>
             </div>
           </div>
         </section>
@@ -189,6 +265,34 @@ function IntegrationRow({ name, desc, action, active }: { name: string; desc: st
       </div>
       <button className={`rounded-full px-4 py-2 ${active ? 'bg-surface border border-border' : 'bg-surface border border-border'}`}>{action}</button>
     </div>
+  );
+}
+
+function PresetCard({ name, className, active, onSelect }: { name: string; className: string; active?: boolean; onSelect: () => void }) {
+  return (
+    <button onClick={onSelect} className={`text-left rounded-2xl border ${active ? 'border-primary' : 'border-border'} p-4 transition-shadow hover:shadow-sm`}>
+      <div className={`${className} rounded-lg p-3 border border-border`}> 
+        <div className="flex gap-2">
+          <div className="h-8 w-8 rounded bg-[var(--color-background)] border border-border" />
+          <div className="h-8 w-8 rounded bg-[var(--color-surface)] border border-border" />
+          <div className="h-8 w-8 rounded bg-[var(--color-primary)]" />
+          <div className="h-8 w-8 rounded bg-[var(--color-secondary)]" />
+          <div className="h-8 w-8 rounded bg-[var(--color-text-primary)]" />
+        </div>
+      </div>
+      <div className="mt-2 text-text-primary font-medium">{name}</div>
+      {active && <div className="text-xs text-success mt-1">Активная</div>}
+    </button>
+  );
+}
+
+function ColorInput({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+  return (
+    <label className="text-sm text-text-secondary flex items-center gap-2">
+      <span className="w-40">{label}</span>
+      <input type="color" className="h-9 w-12 p-0 bg-transparent" value={value || '#ffffff'} onChange={(e)=>onChange(e.target.value)} />
+      <input className="flex-1 h-10 bg-surface border border-border rounded-lg px-2 text-text-primary" placeholder="#RRGGBB" value={value} onChange={(e)=>onChange(e.target.value)} />
+    </label>
   );
 }
 
