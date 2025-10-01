@@ -163,7 +163,6 @@ export default function SettingsClient() {
           {/* Appearance section */}
           <section className="bg-surface border border-border rounded-2xl p-4 sm:p-6 space-y-5">
             <h3 className="text-2xl font-semibold text-text-primary flex items-center gap-2"><HiOutlineColorSwatch /> Внешний вид</h3>
-            <SwitchRow title="Темная тема" desc="В настоящее время используется темная тема для продуктивности" defaultChecked />
             <SwitchRow title="Компактный режим" desc="Показать больше контента в меньшем пространстве" />
             <SwitchRow title="Полноэкранный режим" desc="Развернуть интерфейс на весь экран" checked={isFullscreen} onChange={toggleFullscreen} />
           </section>
