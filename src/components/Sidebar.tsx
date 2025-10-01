@@ -9,7 +9,8 @@ import {
   HiOutlineCheckCircle, 
   HiOutlineChat, 
   HiOutlineCog,
-  HiOutlineLightningBolt
+  HiOutlineLightningBolt,
+  HiOutlineChevronLeft
 } from 'react-icons/hi';
 
 interface NavigationItem {
@@ -23,6 +24,7 @@ interface SidebarProps {
   isOpen: boolean;
   isCollapsed?: boolean;
   onToggleCollapse?: () => void;
+  onClose?: () => void;
 }
 
 const navigationItems: NavigationItem[] = [
@@ -33,25 +35,36 @@ const navigationItems: NavigationItem[] = [
   { id: 'settings', label: 'Настройки', icon: HiOutlineCog },
 ];
 
-export default function Sidebar({ isOpen, isCollapsed = false, onToggleCollapse }: SidebarProps) {
+export default function Sidebar({ isOpen, isCollapsed = false, onToggleCollapse, onClose }: SidebarProps) {
   const router = useRouter();
   const [activeItem, setActiveItem] = useState('home');
 
   return (
     <div className={`${isCollapsed ? 'w-16' : 'w-64'} h-screen bg-background flex flex-col transition-all duration-300 ease-in-out ${
       isOpen ? 'translate-x-0' : '-translate-x-full'
-    } fixed left-0 top-0 z-40 lg:relative`}>
+    } lg:translate-x-0 fixed left-0 top-0 z-40 lg:relative`}>
       <div className={`p-6 ${isCollapsed ? 'px-3' : ''}`}>
       {/* Header */}
-      <div className="flex items-center mb-6">
-        <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mr-3">
-          <HiOutlineLightningBolt className="text-white text-lg" />
-        </div>
-        {!isCollapsed && (
-          <div>
-            <h1 className="text-text-primary font-bold text-lg">NeuroNotes</h1>
-            <p className="text-text-secondary text-sm">AI Помощник</p>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center">
+          <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mr-3">
+            <HiOutlineLightningBolt className="text-white text-lg" />
           </div>
+          {!isCollapsed && (
+            <div>
+              <h1 className="text-text-primary font-bold text-lg">NeuroNotes</h1>
+              <p className="text-text-secondary text-sm">AI Помощник</p>
+            </div>
+          )}
+        </div>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors lg:hidden"
+            aria-label="Свернуть сайдбар"
+          >
+            <HiOutlineChevronLeft className="text-text-primary text-xl" />
+          </button>
         )}
       </div>
 

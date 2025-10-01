@@ -19,15 +19,15 @@ export default function Header({ isSidebarOpen, onToggleSidebar, isSidebarCollap
           aria-label={isSidebarOpen ? 'Скрыть сайдбар' : 'Показать сайдбар'}
         >
           {isSidebarOpen ? (
-            <HiOutlineMenu className="text-text-primary text-xl" />
-          ) : (
             <HiOutlineX className="text-text-primary text-xl" />
+          ) : (
+            <HiOutlineMenu className="text-text-primary text-xl" />
           )}
         </button>
-        {isSidebarOpen && onToggleSidebarCollapse && (
+        {onToggleSidebarCollapse && (
           <button
             onClick={onToggleSidebarCollapse}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors hidden lg:inline-flex"
             aria-label={isSidebarCollapsed ? 'Развернуть сайдбар' : 'Свернуть сайдбар'}
           >
             {isSidebarCollapsed ? (
