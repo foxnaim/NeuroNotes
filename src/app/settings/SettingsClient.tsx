@@ -75,6 +75,93 @@ export default function SettingsClient() {
       secondary: '#38BDF8',
       border: '#BAE6FD',
     },
+    emerald: {
+      background: '#ECFDF5',
+      textPrimary: '#064E3B',
+      textSecondary: '#065F46',
+      surface: '#FFFFFF',
+      primary: '#10B981',
+      secondary: '#34D399',
+      border: '#D1FAE5',
+    },
+    amber: {
+      background: '#FFFBEB',
+      textPrimary: '#78350F',
+      textSecondary: '#92400E',
+      surface: '#FFFFFF',
+      primary: '#F59E0B',
+      secondary: '#FCD34D',
+      border: '#FDE68A',
+    },
+    rose: {
+      background: '#FFF1F2',
+      textPrimary: '#881337',
+      textSecondary: '#9F1239',
+      surface: '#FFFFFF',
+      primary: '#F43F5E',
+      secondary: '#FB7185',
+      border: '#FECDD3',
+    },
+    slate: {
+      background: '#F1F5F9',
+      textPrimary: '#0F172A',
+      textSecondary: '#334155',
+      surface: '#FFFFFF',
+      primary: '#64748B',
+      secondary: '#94A3B8',
+      border: '#E2E8F0',
+    },
+    coffee: {
+      background: '#FAF7F4',
+      textPrimary: '#3E2723',
+      textSecondary: '#5D4037',
+      surface: '#FFFFFF',
+      primary: '#8D6E63',
+      secondary: '#BCAAA4',
+      border: '#E0D7D1',
+    },
+    sunset: {
+      background: '#FFF7ED',
+      textPrimary: '#1F2937',
+      textSecondary: '#6B7280',
+      surface: '#FFFFFF',
+      primary: '#F97316',
+      secondary: '#F43F5E',
+      border: '#FED7AA',
+    },
+    ocean: {
+      background: '#EFF6FF',
+      textPrimary: '#0C4A6E',
+      textSecondary: '#075985',
+      surface: '#FFFFFF',
+      primary: '#2563EB',
+      secondary: '#06B6D4',
+      border: '#BFDBFE',
+    },
+    forest: {
+      background: '#F0FDF4',
+      textPrimary: '#064E3B',
+      textSecondary: '#166534',
+      surface: '#FFFFFF',
+      primary: '#16A34A',
+      secondary: '#22C55E',
+      border: '#BBF7D0',
+    },
+  };
+
+  const presetLabels: Record<string, string> = {
+    dark: 'Тёмная',
+    light: 'Светлая нейроморфная',
+    purplePink: 'Фиолетово-розовая',
+    cyanBlue: 'Бирюзово-синяя',
+    emerald: 'Изумрудная',
+    amber: 'Тёплая янтарная',
+    rose: 'Розовая',
+    slate: 'Сланцевая',
+    coffee: 'Кофейная',
+    sunset: 'Закат',
+    ocean: 'Океан',
+    forest: 'Лесная',
   };
 
   const applyTheme = (colors: Record<string, string>) => {
@@ -226,37 +313,41 @@ export default function SettingsClient() {
       {active === 'colors' && (
         <section className="bg-surface border border-border rounded-2xl p-4 sm:p-6 space-y-6">
           <h2 className="text-2xl font-semibold text-text-primary flex items-center gap-2"><HiOutlineColorSwatch /> Цветовые темы</h2>
+          <p className="text-text-secondary">Выберите пресет или подберите свои цвета — изменения применяются сразу и сохраняются локально.</p>
+
+          {/* Presets */}
           <div className="space-y-3">
             <div className="text-text-secondary text-sm">Предустановленные темы</div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              {[
-                { key: 'dark', label: 'Тёмная' },
-                { key: 'light', label: 'Светлая нейроморфная' },
-                { key: 'purplePink', label: 'Фиолетово-розовая' },
-                { key: 'cyanBlue', label: 'Бирюзово-синяя' },
-              ].map((p) => (
-                <button
-                  key={p.key}
-                  className={`text-left bg-background border border-border rounded-xl p-4 hover:bg-gray-50 transition-colors ${themeName===p.key ? 'ring-2 ring-primary' : ''}`}
-                  onClick={() => {
-                    const colors = presets[p.key];
-                    setThemeName(p.key);
-                    setCustomColors(colors);
-                    applyTheme(colors);
-                    saveTheme(p.key, colors);
-                  }}
-                >
-                  <div className="text-text-primary font-medium mb-2">{p.label}</div>
-                  <div className="flex items-center gap-2">
-                    {Object.values(presets[p.key]).slice(0,6).map((c, i) => (
-                      <span key={i} className="h-5 w-5 rounded-full border" style={{ backgroundColor: c }} />
-                    ))}
-                  </div>
-                </button>
-              ))}
+              {Object.keys(presets).map((key) => {
+                const colors = presets[key];
+                const label = presetLabels[key] || key;
+                const gradient = `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})`;
+                return (
+                  <button
+                    key={key}
+                    className={`text-left bg-background border border-border rounded-xl p-4 hover:bg-gray-50 transition-colors ${themeName===key ? 'ring-2 ring-primary' : ''}`}
+                    onClick={() => {
+                      setThemeName(key);
+                      setCustomColors(colors);
+                      applyTheme(colors);
+                      saveTheme(key, colors);
+                    }}
+                  >
+                    <div className="text-text-primary font-medium mb-3">{label}</div>
+                    <div className="h-2 rounded-full mb-3" style={{ background: gradient }} />
+                    <div className="flex items-center gap-2">
+                      {[colors.background, colors.textPrimary, colors.textSecondary, colors.surface, colors.primary, colors.secondary].map((c, i) => (
+                        <span key={i} className="h-5 w-5 rounded-full border" style={{ backgroundColor: c }} />
+                      ))}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
+          {/* Custom colors */}
           <div className="space-y-3">
             <div className="text-text-secondary text-sm">Кастомные цвета</div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -269,18 +360,35 @@ export default function SettingsClient() {
                 { key: 'secondary', label: 'Secondary' },
                 { key: 'border', label: 'Границы' },
               ].map((f) => (
-                <label key={f.key} className="flex items-center justify-between bg-background border border-border rounded-lg p-3">
-                  <span className="text-text-primary text-sm">{f.label}</span>
-                  <input
-                    type="color"
-                    value={customColors[f.key] || '#ffffff'}
-                    onChange={(e) => {
-                      const next = { ...customColors, [f.key]: e.target.value };
-                      setCustomColors(next);
-                      applyTheme(next);
-                    }}
-                  />
-                </label>
+                <div key={f.key} className="bg-background border border-border rounded-lg p-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-text-primary text-sm">{f.label}</span>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="color"
+                        className="h-9 w-12 cursor-pointer"
+                        value={customColors[f.key] || '#ffffff'}
+                        onChange={(e) => {
+                          const next = { ...customColors, [f.key]: e.target.value };
+                          setCustomColors(next);
+                          applyTheme(next);
+                        }}
+                      />
+                      <input
+                        className="h-9 w-28 bg-surface border border-border rounded-md px-2 text-sm"
+                        value={customColors[f.key] || ''}
+                        placeholder="#HEX"
+                        onChange={(e) => {
+                          const v = e.target.value;
+                          const ok = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v);
+                          const next = { ...customColors, [f.key]: v } as Record<string, string>;
+                          setCustomColors(next);
+                          if (ok) applyTheme(next);
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
             <div className="flex items-center gap-3">
