@@ -749,16 +749,22 @@ export default function SettingsClient() {
               <button
                 className="bg-surface border border-border rounded-full px-5 py-2"
                 onClick={() => {
-                  const data = { name: themeName, colors: customColors };
-                  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = `neuronotes-theme-${themeName}.json`;
-                  document.body.appendChild(a);
-                  a.click();
-                  URL.revokeObjectURL(url);
-                  a.remove();
+                  try {
+                    const data = { name: themeName, colors: customColors };
+                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `neuronotes-theme-${themeName}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    setTimeout(() => {
+                      URL.revokeObjectURL(url);
+                      a.remove();
+                    }, 0);
+                  } catch (e) {
+                    console.error('Export failed', e);
+                  }
                 }}
               >
                 Экспорт JSON
