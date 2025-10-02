@@ -21,7 +21,6 @@
 .compact .gap-3{ gap:0.5rem; }
 .compact .rounded-2xl{ border-radius:0.75rem; }
 .compact .text-2xl{ font-size:1.25rem; }
-.compact .text-xl{ font-size:1rem; }
 
 /* Accessibility: ensure contrasts by tinting borders/backgrounds on dark themes */
 .bg-surface { background-color: var(--color-surface); }
