@@ -17,9 +17,9 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://neuronotes.app"),
   applicationName: "NeuroNotes",
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
-    apple: "/favicon.svg",
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
   },
   title: {
     default: "NeuroNotes — Заметки и задачи с ИИ",
@@ -84,8 +84,8 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <head>
-        <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/favicon.svg" />
+        <link rel="icon" href="/logo.png" sizes="any" type="image/png" />
+        <link rel="apple-touch-icon" href="/logo.png" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-text-primary`}
