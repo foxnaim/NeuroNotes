@@ -29,6 +29,10 @@
 .text-text-secondary { color: var(--color-text-secondary); }
 .border-border { border-color: var(--color-border); }
 
+/* Prevent sidebar icon size shrinking in compact mode */
+.sidebar-icon { font-size: 1.25rem; }
+.compact .sidebar-icon { font-size: 1.25rem; }
+
 /* Auto-contrast for raster logos: invert on dark backgrounds, normal on light */
 .logo-auto-contrast {
   filter: var(--logo-filter);

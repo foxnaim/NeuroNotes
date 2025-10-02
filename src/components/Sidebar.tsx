@@ -107,7 +107,7 @@ export default function Sidebar({ isOpen, isCollapsed = false, onToggleCollapse,
                 }`}
                 title={isCollapsed ? item.label : undefined}
               >
-                <IconComponent className="text-xl" />
+                <IconComponent className="sidebar-icon text-xl" />
                 {!isCollapsed && (
                   <span className="font-medium text-center">{item.label}</span>
                 )}
