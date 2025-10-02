@@ -37,6 +37,7 @@ export default function SettingsClient() {
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [themeName, setThemeName] = useState<string>('dark');
   const [customColors, setCustomColors] = useState<Record<string, string>>({});
+  const [presetQuery, setPresetQuery] = useState<string>('');
 
   const presets: Record<string, Record<string, string>> = {
     dark: {
@@ -274,6 +275,41 @@ export default function SettingsClient() {
     lime: 'Лаймовая',
   };
 
+  const categorizedPresets: Record<string, string[]> = {
+    'Классические': ['dark', 'light', 'slate', 'graphite', 'solarizedLight', 'solarizedDark'],
+    'Холодные/спокойные': ['cyanBlue', 'ocean', 'navy', 'mint', 'lavender'],
+    'Тёплые/атмосферные': ['amber', 'sepia', 'sunset', 'autumn'],
+    'Природные': ['emerald', 'forest', 'lime', 'coffee'],
+    'Яркие/креативные': ['purplePink', 'rose', 'berry', 'cyberpunk'],
+  };
+
+  const renderPresetButton = (key: string) => {
+    const colors = presets[key];
+    if (!colors) return null;
+    const label = presetLabels[key] || key;
+    const gradient = `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})`;
+    return (
+      <button
+        key={key}
+        className={`text-left bg-background border border-border rounded-xl p-4 hover:bg-gray-50 transition-colors ${themeName===key ? 'ring-2 ring-primary' : ''}`}
+        onClick={() => {
+          setThemeName(key);
+          setCustomColors(colors);
+          applyTheme(colors);
+          saveTheme(key, colors);
+        }}
+      >
+        <div className="text-text-primary font-medium mb-3">{label}</div>
+        <div className="h-2 rounded-full mb-3" style={{ background: gradient }} />
+        <div className="flex items-center gap-2">
+          {[colors.background, colors.textPrimary, colors.textSecondary, colors.surface, colors.primary, colors.secondary].map((c, i) => (
+            <span key={i} className="h-5 w-5 rounded-full border" style={{ backgroundColor: c }} />
+          ))}
+        </div>
+      </button>
+    );
+  };
+
   const applyTheme = (colors: Record<string, string>) => {
     const root = document.documentElement;
     root.style.setProperty('--color-background', colors.background);
@@ -426,35 +462,29 @@ export default function SettingsClient() {
           <p className="text-text-secondary">Выберите пресет или подберите свои цвета — изменения применяются сразу и сохраняются локально.</p>
 
           {/* Presets */}
-          <div className="space-y-3">
-            <div className="text-text-secondary text-sm">Предустановленные темы</div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              {Object.keys(presets).map((key) => {
-                const colors = presets[key];
-                const label = presetLabels[key] || key;
-                const gradient = `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})`;
-                return (
-                  <button
-                    key={key}
-                    className={`text-left bg-background border border-border rounded-xl p-4 hover:bg-gray-50 transition-colors ${themeName===key ? 'ring-2 ring-primary' : ''}`}
-                    onClick={() => {
-                      setThemeName(key);
-                      setCustomColors(colors);
-                      applyTheme(colors);
-                      saveTheme(key, colors);
-                    }}
-                  >
-                    <div className="text-text-primary font-medium mb-3">{label}</div>
-                    <div className="h-2 rounded-full mb-3" style={{ background: gradient }} />
-                    <div className="flex items-center gap-2">
-                      {[colors.background, colors.textPrimary, colors.textSecondary, colors.surface, colors.primary, colors.secondary].map((c, i) => (
-                        <span key={i} className="h-5 w-5 rounded-full border" style={{ backgroundColor: c }} />
-                      ))}
-                    </div>
-                  </button>
-                );
-              })}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="text-text-secondary text-sm">Предустановленные темы</div>
+              <input
+                className="h-10 w-64 bg-background border border-border rounded-full px-4 text-sm"
+                placeholder="Поиск пресета..."
+                value={presetQuery}
+                onChange={(e) => setPresetQuery(e.target.value)}
+              />
             </div>
+
+            {Object.entries(categorizedPresets).map(([group, keys]) => {
+              const visible = keys.filter((k) => (presetLabels[k] || k).toLowerCase().includes(presetQuery.toLowerCase()));
+              if (visible.length === 0) return null;
+              return (
+                <div key={group} className="space-y-2">
+                  <div className="text-text-primary font-medium">{group}</div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    {visible.map((k) => renderPresetButton(k))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
           {/* Custom colors */}
