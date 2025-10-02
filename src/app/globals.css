@@ -22,3 +22,10 @@
 .compact .rounded-2xl{ border-radius:0.75rem; }
 .compact .text-2xl{ font-size:1.25rem; }
 .compact .text-xl{ font-size:1rem; }
+
+/* Accessibility: ensure contrasts by tinting borders/backgrounds on dark themes */
+.bg-surface { background-color: var(--color-surface); }
+.bg-background { background-color: var(--color-background); }
+.text-text-primary { color: var(--color-text-primary); }
+.text-text-secondary { color: var(--color-text-secondary); }
+.border-border { border-color: var(--color-border); }

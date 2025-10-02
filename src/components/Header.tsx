@@ -39,7 +39,11 @@ export default function Header({ isSidebarOpen, onToggleSidebar, isSidebarCollap
           </button>
         )}
         <div className="hidden lg:flex items-center gap-3">
-          <Image src="/logo.png" alt="NeuroNotes" width={28} height={28} />
+          <span className="rounded-full bg-gradient-to-br from-primary to-secondary p-[1.5px]">
+            <span className="inline-flex items-center justify-center w-7 h-7 rounded-full overflow-hidden bg-surface border border-border">
+              <Image src="/logo.png" alt="NeuroNotes" width={28} height={28} />
+            </span>
+          </span>
           <h1 className="text-text-primary font-semibold text-lg">Добро пожаловать</h1>
         </div>
       </div>
