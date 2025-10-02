@@ -35,6 +35,7 @@ function TabBar({ active, onChange }: { active: TabKey; onChange: (t: TabKey) =>
 export default function SettingsClient() {
   const [active, setActive] = useState<TabKey>('profile');
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [isCompact, setIsCompact] = useState<boolean>(false);
   const [themeName, setThemeName] = useState<string>('dark');
   const [customColors, setCustomColors] = useState<Record<string, string>>({});
   const [presetQuery, setPresetQuery] = useState<string>('');
@@ -469,6 +470,12 @@ export default function SettingsClient() {
     } catch {}
   };
 
+  const applyCompact = (enabled: boolean) => {
+    const root = document.documentElement;
+    root.classList.toggle('compact', enabled);
+    try { localStorage.setItem('nn-compact', enabled ? '1' : '0'); } catch {}
+  };
+
   const loadFavorites = () => {
     try {
       const raw = localStorage.getItem('nn-favorite-presets');
@@ -505,6 +512,12 @@ export default function SettingsClient() {
     } catch {
       // ignore
     }
+    try {
+      const c = localStorage.getItem('nn-compact');
+      const enabled = c === '1';
+      setIsCompact(enabled);
+      applyCompact(enabled);
+    } catch {}
     loadFavorites();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -551,7 +564,7 @@ export default function SettingsClient() {
           {/* Appearance section */}
           <section className="bg-surface border border-border rounded-2xl p-4 sm:p-6 space-y-5">
             <h3 className="text-2xl font-semibold text-text-primary flex items-center gap-2"><HiOutlineColorSwatch /> Внешний вид</h3>
-            <SwitchRow title="Компактный режим" desc="Показать больше контента в меньшем пространстве" />
+            <SwitchRow title="Компактный режим" desc="Показать больше контента в меньшем пространстве" checked={isCompact} onChange={() => { const next = !isCompact; setIsCompact(next); applyCompact(next); }} />
             <SwitchRow title="Полноэкранный режим" desc="Развернуть интерфейс на весь экран" checked={isFullscreen} onChange={toggleFullscreen} />
           </section>
         </>
