@@ -413,9 +413,8 @@ export default function SettingsClient() {
     const label = presetLabels[key] || key;
     const gradient = `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})`;
     return (
-      <div className="relative">
+      <div key={key} className="relative">
         <button
-          key={key}
           className={`w-full text-left bg-background border border-border rounded-xl p-4 hover:bg-gray-50 transition-colors ${themeName===key ? 'ring-2 ring-primary' : ''}`}
           onClick={() => {
             setThemeName(key);
