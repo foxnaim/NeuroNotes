@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { HiOutlineUser, HiOutlineSparkles, HiOutlineBell, HiOutlinePuzzle, HiOutlineShieldCheck, HiOutlineColorSwatch } from 'react-icons/hi';
+import { useEffect, useRef, useState } from 'react';
+import { HiOutlineUser, HiOutlineSparkles, HiOutlineBell, HiOutlinePuzzle, HiOutlineShieldCheck, HiOutlineColorSwatch, HiOutlineStar, HiStar } from 'react-icons/hi';
 
 type TabKey = 'profile' | 'ai' | 'notifications' | 'integrations' | 'privacy' | 'colors';
 
@@ -38,6 +38,8 @@ export default function SettingsClient() {
   const [themeName, setThemeName] = useState<string>('dark');
   const [customColors, setCustomColors] = useState<Record<string, string>>({});
   const [presetQuery, setPresetQuery] = useState<string>('');
+  const [favoritePresets, setFavoritePresets] = useState<string[]>([]);
+  const importFileRef = useRef<HTMLInputElement | null>(null);
 
   const presets: Record<string, Record<string, string>> = {
     dark: {
@@ -410,24 +412,43 @@ export default function SettingsClient() {
     const label = presetLabels[key] || key;
     const gradient = `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})`;
     return (
-      <button
-        key={key}
-        className={`text-left bg-background border border-border rounded-xl p-4 hover:bg-gray-50 transition-colors ${themeName===key ? 'ring-2 ring-primary' : ''}`}
-        onClick={() => {
-          setThemeName(key);
-          setCustomColors(colors);
-          applyTheme(colors);
-          saveTheme(key, colors);
-        }}
-      >
-        <div className="text-text-primary font-medium mb-3">{label}</div>
-        <div className="h-2 rounded-full mb-3" style={{ background: gradient }} />
-        <div className="flex items-center gap-2">
-          {[colors.background, colors.textPrimary, colors.textSecondary, colors.surface, colors.primary, colors.secondary].map((c, i) => (
-            <span key={i} className="h-5 w-5 rounded-full border" style={{ backgroundColor: c }} />
-          ))}
-        </div>
-      </button>
+      <div className="relative">
+        <button
+          key={key}
+          className={`w-full text-left bg-background border border-border rounded-xl p-4 hover:bg-gray-50 transition-colors ${themeName===key ? 'ring-2 ring-primary' : ''}`}
+          onClick={() => {
+            setThemeName(key);
+            setCustomColors(colors);
+            applyTheme(colors);
+            saveTheme(key, colors);
+          }}
+        >
+          <div className="text-text-primary font-medium mb-3">{label}</div>
+          <div className="h-2 rounded-full mb-3" style={{ background: gradient }} />
+          <div className="flex items-center gap-2">
+            {[colors.background, colors.textPrimary, colors.textSecondary, colors.surface, colors.primary, colors.secondary].map((c, i) => (
+              <span key={i} className="h-5 w-5 rounded-full border" style={{ backgroundColor: c }} />
+            ))}
+          </div>
+        </button>
+        <button
+          aria-label="Избранное"
+          className="absolute top-2 right-2 h-8 w-8 inline-flex items-center justify-center rounded-full bg-surface border border-border hover:bg-gray-50"
+          onClick={(e) => {
+            e.stopPropagation();
+            const next = favoritePresets.includes(key)
+              ? favoritePresets.filter((k) => k !== key)
+              : [...favoritePresets, key];
+            saveFavorites(next);
+          }}
+        >
+          {favoritePresets.includes(key) ? (
+            <HiStar className="text-primary" />
+          ) : (
+            <HiOutlineStar className="text-text-secondary" />
+          )}
+        </button>
+      </div>
     );
   };
 
@@ -446,6 +467,18 @@ export default function SettingsClient() {
     try {
       localStorage.setItem('nn-theme', JSON.stringify({ name, colors }));
     } catch {}
+  };
+
+  const loadFavorites = () => {
+    try {
+      const raw = localStorage.getItem('nn-favorite-presets');
+      if (raw) setFavoritePresets(JSON.parse(raw));
+    } catch {}
+  };
+
+  const saveFavorites = (list: string[]) => {
+    setFavoritePresets(list);
+    try { localStorage.setItem('nn-favorite-presets', JSON.stringify(list)); } catch {}
   };
 
   useEffect(() => {
@@ -472,6 +505,7 @@ export default function SettingsClient() {
     } catch {
       // ignore
     }
+    loadFavorites();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -594,6 +628,17 @@ export default function SettingsClient() {
               />
             </div>
 
+            {favoritePresets.length > 0 && (
+              <div className="space-y-2">
+                <div className="text-text-primary font-medium">Избранные</div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  {favoritePresets
+                    .filter((k) => (presetLabels[k] || k).toLowerCase().includes(presetQuery.toLowerCase()))
+                    .map((k) => renderPresetButton(k))}
+                </div>
+              </div>
+            )}
+
             {Object.entries(categorizedPresets).map(([group, keys]) => {
               const visible = keys.filter((k) => (presetLabels[k] || k).toLowerCase().includes(presetQuery.toLowerCase()));
               if (visible.length === 0) return null;
@@ -664,6 +709,47 @@ export default function SettingsClient() {
                 onClick={() => { const colors = presets.dark; setThemeName('dark'); setCustomColors(colors); applyTheme(colors); saveTheme('dark', colors); }}
               >
                 Сбросить к тёмной
+              </button>
+              <input ref={importFileRef} type="file" accept="application/json" className="hidden" onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = () => {
+                  try {
+                    const parsed = JSON.parse(String(reader.result));
+                    if (parsed && parsed.colors) {
+                      setThemeName(parsed.name || 'imported');
+                      setCustomColors(parsed.colors);
+                      applyTheme(parsed.colors);
+                      saveTheme(parsed.name || 'imported', parsed.colors);
+                    }
+                  } catch {}
+                };
+                reader.readAsText(file);
+                e.currentTarget.value = '';
+              }} />
+              <button
+                className="bg-surface border border-border rounded-full px-5 py-2"
+                onClick={() => importFileRef.current?.click()}
+              >
+                Импорт JSON
+              </button>
+              <button
+                className="bg-surface border border-border rounded-full px-5 py-2"
+                onClick={() => {
+                  const data = { name: themeName, colors: customColors };
+                  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `neuronotes-theme-${themeName}.json`;
+                  document.body.appendChild(a);
+                  a.click();
+                  URL.revokeObjectURL(url);
+                  a.remove();
+                }}
+              >
+                Экспорт JSON
               </button>
             </div>
           </div>
