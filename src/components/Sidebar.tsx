@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { 
   HiOutlinePlus, 
@@ -47,8 +48,8 @@ export default function Sidebar({ isOpen, isCollapsed = false, onToggleCollapse,
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
-          <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mr-3">
-            <HiOutlineLightningBolt className="text-white text-lg" />
+          <div className="w-10 h-10 rounded-full overflow-hidden mr-3 bg-surface border border-border flex items-center justify-center">
+            <Image src="/logo.png" alt="NeuroNotes" width={40} height={40} />
           </div>
           {!isCollapsed && (
             <div>

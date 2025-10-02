@@ -1,6 +1,7 @@
 'use client';
 
 import { HiOutlineMenu, HiOutlineX, HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
+import Image from 'next/image';
 
 interface HeaderProps {
   isSidebarOpen: boolean;
@@ -37,7 +38,10 @@ export default function Header({ isSidebarOpen, onToggleSidebar, isSidebarCollap
             )}
           </button>
         )}
-        <h1 className="text-text-primary font-semibold text-lg">Добро пожаловать</h1>
+        <div className="hidden lg:flex items-center gap-3">
+          <Image src="/logo.png" alt="NeuroNotes" width={28} height={28} />
+          <h1 className="text-text-primary font-semibold text-lg">Добро пожаловать</h1>
+        </div>
       </div>
     </header>
   );
