@@ -41,7 +41,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           isSidebarCollapsed={isSidebarCollapsed}
           onToggleSidebarCollapse={toggleSidebarCollapse}
         />
-        <main className="flex-1 overflow-auto">
+        <main className="content-root flex-1 overflow-auto">
           {children}
         </main>
       </div>

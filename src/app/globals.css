@@ -13,14 +13,16 @@
   --color-error: #EF4444;
 }
 
-/* Compact mode utility */
-.compact .p-4{ padding:0.75rem; }
-.compact .p-6{ padding:1rem; }
-.compact .px-5{ padding-left:1rem; padding-right:1rem; }
-.compact .py-2{ padding-top:0.375rem; padding-bottom:0.375rem; }
-.compact .gap-3{ gap:0.5rem; }
-.compact .rounded-2xl{ border-radius:0.75rem; }
-.compact .text-2xl{ font-size:1.25rem; }
+/* Compact mode utility — scoped ONLY to main content */
+.compact .content-root .p-4{ padding:0.75rem; }
+.compact .content-root .p-6{ padding:1rem; }
+.compact .content-root .px-5{ padding-left:1rem; padding-right:1rem; }
+.compact .content-root .py-2{ padding-top:0.375rem; padding-bottom:0.375rem; }
+.compact .content-root .gap-3{ gap:0.5rem; }
+.compact .content-root .rounded-2xl{ border-radius:0.75rem; }
+.compact .content-root .text-2xl{ font-size:1.25rem; }
+
+/* Sidebar unaffected by compact mode because rules are scoped to .content-root */
 
 /* Accessibility: ensure contrasts by tinting borders/backgrounds on dark themes */
 .bg-surface { background-color: var(--color-surface); }
