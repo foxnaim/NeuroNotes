@@ -30,8 +30,12 @@
 .border-border { border-color: var(--color-border); }
 
 /* Prevent sidebar icon size shrinking in compact mode */
-.sidebar-icon { font-size: 1.25rem; }
-.compact .sidebar-icon { font-size: 1.25rem; }
+.sidebar-root .sidebar-icon { font-size: 1.25rem; }
+.compact .sidebar-root .sidebar-icon { font-size: 1.25rem; }
+
+/* Keep quick note and bottom status sizes too */
+.sidebar-root .w-10.h-10 { width: 2.5rem; height: 2.5rem; }
+.compact .sidebar-root .w-10.h-10 { width: 2.5rem; height: 2.5rem; }
 
 /* Auto-contrast for raster logos: invert on dark backgrounds, normal on light */
 .logo-auto-contrast {

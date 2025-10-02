@@ -41,7 +41,7 @@ export default function Sidebar({ isOpen, isCollapsed = false, onToggleCollapse,
   const [activeItem, setActiveItem] = useState('home');
 
   return (
-    <div className={`${isCollapsed ? 'w-16' : 'w-64'} h-screen bg-background flex flex-col transition-all duration-300 ease-in-out ${
+    <div className={`${isCollapsed ? 'w-16' : 'w-64'} h-screen bg-background flex flex-col transition-all duration-300 ease-in-out sidebar-root ${
       isOpen ? 'translate-x-0' : '-translate-x-full'
     } lg:translate-x-0 fixed left-0 top-0 z-40 lg:relative`}>
       <div className={`p-6 ${isCollapsed ? 'px-3' : ''}`}>
