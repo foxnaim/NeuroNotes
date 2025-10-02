@@ -29,3 +29,16 @@
 .text-text-primary { color: var(--color-text-primary); }
 .text-text-secondary { color: var(--color-text-secondary); }
 .border-border { border-color: var(--color-border); }
+
+/* Auto-contrast for raster logos: invert on dark backgrounds, normal on light */
+.logo-auto-contrast {
+  filter: var(--logo-filter);
+  transition: filter 200ms ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root { --logo-filter: invert(1) contrast(1.05) saturate(0.9); }
+}
+
+/* Override via theme variables if needed */
+:root { --logo-filter: invert(0); }

@@ -50,7 +50,7 @@ export default function Sidebar({ isOpen, isCollapsed = false, onToggleCollapse,
         <div className="flex items-center">
           <div className="mr-3 rounded-full bg-gradient-to-br from-primary to-secondary p-[2px]">
             <div className="w-10 h-10 rounded-full overflow-hidden bg-surface border border-border flex items-center justify-center">
-              <Image src="/logo.png" alt="NeuroNotes" width={40} height={40} />
+              <Image src="/logo.png" alt="NeuroNotes" width={40} height={40} className="logo-auto-contrast" />
             </div>
           </div>
           {!isCollapsed && (

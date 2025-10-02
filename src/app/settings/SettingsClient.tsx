@@ -461,6 +461,14 @@ export default function SettingsClient() {
     root.style.setProperty('--color-primary', colors.primary);
     root.style.setProperty('--color-secondary', colors.secondary);
     root.style.setProperty('--color-border', colors.border);
+    // auto-contrast logo based on perceived lightness of background
+    const bg = colors.background.replace('#','');
+    const r = parseInt(bg.substring(0,2),16);
+    const g = parseInt(bg.substring(2,4),16);
+    const b = parseInt(bg.substring(4,6),16);
+    const luminance = (0.2126*r + 0.7152*g + 0.0722*b) / 255;
+    const filter = luminance < 0.5 ? 'invert(1) contrast(1.05) saturate(0.9)' : 'invert(0)';
+    root.style.setProperty('--logo-filter', filter);
   };
 
   const saveTheme = (name: string, colors: Record<string, string>) => {
