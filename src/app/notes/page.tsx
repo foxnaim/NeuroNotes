@@ -14,6 +14,7 @@ import {
   HiOutlineX,
   HiOutlineDotsHorizontal
 } from 'react-icons/hi';
+import { Button } from '@/components/ui';
 
 export default function NotesPage() {
   const [isNewOpen, setIsNewOpen] = useState(false);
@@ -105,16 +106,31 @@ export default function NotesPage() {
 
   return (
     <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
-      {/* Header row: title + action */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-4xl font-bold text-text-primary mb-2">Заметки</h1>
-          <p className="text-text-secondary">Захватывайте, организуйте и улучшайте ваши идеи с помощью ИИ</p>
+      {/* Header row: title + action - Cybrary Style */}
+      <div className="mb-8">
+        <div className="flex items-start justify-between mb-6">
+          <div>
+            <h1 className="text-4xl sm:text-5xl font-bold text-text-primary mb-3">Заметки</h1>
+            <p className="text-lg text-text-secondary max-w-2xl">Захватывайте, организуйте и улучшайте ваши идеи с помощью ИИ. Создавайте заметки, получайте резюме и структурируйте мысли.</p>
+          </div>
         </div>
-        <button onClick={() => setIsNewOpen(true)} className="bg-gradient-to-r from-primary to-secondary text-white rounded-full px-5 py-3 flex items-center gap-2 hover:opacity-90 transition-opacity">
-          <HiOutlinePlus />
-          <span className="font-medium">Новая заметка</span>
-        </button>
+        <div className="flex items-center gap-3">
+          <Button 
+            onClick={() => setIsNewOpen(true)} 
+            leftIcon={HiOutlinePlus}
+            size="lg"
+          >
+            Новая заметка
+          </Button>
+          <Button 
+            onClick={() => setIsAiSearchOpen(true)} 
+            variant="secondary"
+            leftIcon={HiOutlineSparkles}
+            size="lg"
+          >
+            ИИ поиск
+          </Button>
+        </div>
       </div>
 
       {/* Search row */}
@@ -128,26 +144,39 @@ export default function NotesPage() {
             onChange={(e) => setQuery(e.target.value)}
           />
         </div>
-        <button
-          className="h-12 w-12 bg-surface border border-border rounded-full hover:bg-gray-50 transition-colors flex items-center justify-center"
+        <Button
+          variant="secondary"
+          className="h-12 w-12 p-0"
           aria-label="Фильтры"
         >
           <HiOutlineAdjustments className="text-text-primary" />
-        </button>
-        <button onClick={() => setIsAiSearchOpen(true)} className="h-12 px-5 bg-surface border border-border rounded-full hover:bg-gray-50 transition-colors inline-flex items-center gap-2">
-          <HiOutlineSparkles className="text-text-primary" />
-          <span className="text-text-primary font-medium">ИИ поиск</span>
-        </button>
+        </Button>
+        <Button onClick={() => setIsAiSearchOpen(true)} variant="secondary" className="h-12" leftIcon={HiOutlineSparkles}>
+          ИИ поиск
+        </Button>
       </div>
 
       {/* Tags row */}
       <div className="flex flex-wrap gap-2">
-        <button onClick={() => setActiveTag(undefined)} className={`px-3 py-1 rounded-full text-sm ${!activeTag ? 'bg-gradient-to-r from-primary to-secondary text-white' : 'bg-surface border border-border text-text-primary'}`}>Все заметки</button>
+        <Button 
+          onClick={() => setActiveTag(undefined)} 
+          size="sm"
+          variant={!activeTag ? 'primary' : 'secondary'}
+          className="px-3 py-1"
+        >
+          Все заметки
+        </Button>
         {availableTags.map(tag => (
-          <button key={tag} onClick={() => setActiveTag(tag)} className={`px-3 py-1 rounded-full text-sm hover:bg-gray-50 transition-colors flex items-center gap-1 ${activeTag===tag ? 'bg-surface border border-primary text-text-primary' : 'bg-surface border border-border text-text-primary'}`}>
-            <HiOutlineHashtag />
-            <span>{tag}</span>
-          </button>
+          <Button 
+            key={tag} 
+            onClick={() => setActiveTag(tag)} 
+            size="sm"
+            variant={activeTag===tag ? 'outline' : 'secondary'}
+            leftIcon={HiOutlineHashtag}
+            className="px-3 py-1"
+          >
+            {tag}
+          </Button>
         ))}
       </div>
 
@@ -158,7 +187,7 @@ export default function NotesPage() {
           <div className="relative bg-surface border border-border rounded-2xl p-5 w-full max-w-2xl">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-text-primary font-semibold text-lg">Новая заметка</h3>
-              <button className="h-10 px-4 bg-surface border border-border rounded-full" onClick={() => setIsNewOpen(false)}>Закрыть</button>
+              <Button variant="secondary" onClick={() => setIsNewOpen(false)}>Закрыть</Button>
             </div>
             <div className="space-y-3">
               <input className="w-full h-11 bg-surface border border-border rounded-lg px-3 text-text-primary focus:outline-none" placeholder="Заголовок" value={title} onChange={(e)=>setTitle(e.target.value)} />
@@ -170,13 +199,13 @@ export default function NotesPage() {
                 ))}
               </div>
               <div className="flex justify-end gap-3">
-                <button className="h-10 px-4 bg-surface border border-border rounded-full" onClick={()=>setIsNewOpen(false)}>Отмена</button>
-                <button className="h-10 px-4 bg-gradient-to-r from-primary to-secondary text-white rounded-full" onClick={()=>{ 
+                <Button variant="secondary" onClick={()=>setIsNewOpen(false)}>Отмена</Button>
+                <Button onClick={()=>{ 
                   const tags = newTags.split(',').map(t => t.trim()).filter(Boolean);
                   const words = content.trim() ? content.trim().split(/\s+/).length : 0;
                   setNotes(prev => [{ title, content, tags, metaTime: 'только что', words }, ...prev]);
                   setTitle(''); setContent(''); setNewTags(''); setIsNewOpen(false); 
-                }}>Создать</button>
+                }}>Создать</Button>
               </div>
             </div>
           </div>
@@ -190,7 +219,7 @@ export default function NotesPage() {
           <div className="relative bg-surface border border-border rounded-2xl p-5 w-full max-w-2xl">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-text-primary font-semibold text-lg">Редактировать заметку</h3>
-              <button className="h-10 px-4 bg-surface border border-border rounded-full" onClick={() => setIsEditOpen(false)}>Закрыть</button>
+              <Button variant="secondary" onClick={() => setIsEditOpen(false)}>Закрыть</Button>
             </div>
             <div className="space-y-3">
               <input className="w-full h-11 bg-surface border border-border rounded-lg px-3 text-text-primary focus:outline-none" placeholder="Заголовок" value={editTitle} onChange={(e)=>setEditTitle(e.target.value)} />
@@ -202,8 +231,8 @@ export default function NotesPage() {
                 ))}
               </div>
               <div className="flex justify-end gap-3">
-                <button className="h-10 px-4 bg-surface border border-border rounded-full" onClick={() => setIsEditOpen(false)}>Отмена</button>
-                <button className="h-10 px-4 bg-gradient-to-r from-primary to-secondary text-white rounded-full" onClick={saveEdit}>Сохранить</button>
+                <Button variant="secondary" onClick={() => setIsEditOpen(false)}>Отмена</Button>
+                <Button onClick={saveEdit}>Сохранить</Button>
               </div>
             </div>
           </div>
@@ -217,7 +246,7 @@ export default function NotesPage() {
           <div className="relative bg-surface border border-border rounded-2xl p-5 w-full max-w-2xl">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-text-primary font-semibold text-lg">ИИ поиск</h3>
-              <button className="h-10 px-4 bg-surface border border-border rounded-full" onClick={() => setIsAiSearchOpen(false)}>Закрыть</button>
+              <Button variant="secondary" onClick={() => setIsAiSearchOpen(false)}>Закрыть</Button>
             </div>
             <div className="space-y-3">
               <input className="w-full h-11 bg-surface border border-border rounded-lg px-3 text-text-primary focus:outline-none" placeholder="Что найти в заметках?" value={query} onChange={(e)=>setQuery(e.target.value)} />
@@ -227,7 +256,7 @@ export default function NotesPage() {
                 <input className="h-11 bg-surface border border-border rounded-lg px-3 text-text-primary focus:outline-none" placeholder="Теги" />
               </div>
               <div className="flex justify-end">
-                <button className="h-10 px-4 bg-gradient-to-r from-primary to-secondary text-white rounded-full" onClick={()=>setIsAiSearchOpen(false)}>Искать</button>
+                <Button onClick={()=>setIsAiSearchOpen(false)}>Искать</Button>
               </div>
             </div>
           </div>
@@ -236,69 +265,75 @@ export default function NotesPage() {
 
       {/* View toggles */}
       <div className="flex items-center gap-2">
-        <button className="px-3 py-1 rounded-full bg-surface border border-border text-text-primary text-sm">Сетка</button>
-        <button className="px-3 py-1 rounded-full bg-surface border border-border text-text-primary text-sm">Список</button>
+        <Button variant="secondary" size="sm" className="px-3 py-1">Сетка</Button>
+        <Button variant="secondary" size="sm" className="px-3 py-1">Список</Button>
       </div>
 
-      {/* Notes grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+      {/* Notes grid - Cybrary Card Style */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
         {filteredNotes.map((n, i) => (
-          <div key={`${n.title}-${i}`} className="bg-surface border border-border rounded-xl p-5">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2 text-text-secondary">
-                <HiOutlineDocumentText />
-              </div>
-              <div className="flex items-center gap-2 relative">
-                <div className="flex items-center gap-1 text-text-secondary text-xs">
-                  <HiOutlineClock />
-                  {n.metaTime}
+          <div key={`${n.title}-${i}`} className="bg-surface border border-border rounded-2xl p-6 hover:shadow-lg transition-all group">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
+                    <HiOutlineDocumentText className="text-white text-lg" />
+                  </div>
+                  <span className="text-xs text-text-secondary bg-gray-100 px-2 py-1 rounded-full">{n.metaTime}</span>
                 </div>
-                <button
-                  className="h-8 w-8 inline-flex items-center justify-center rounded-full bg-surface border border-border hover:bg-gray-50"
-                  title="Меню"
-                  onClick={() => setOpenMenuIndex(openMenuIndex === i ? null : i)}
-                >
-                  <HiOutlineDotsHorizontal className="text-text-primary" />
-                </button>
+                <h3 className="text-text-primary font-bold text-xl mb-3 group-hover:text-primary transition-colors">{n.title}</h3>
+                <p className="text-text-secondary text-sm mb-4 line-clamp-3">{n.content}</p>
+              </div>
+              <Button
+                variant="ghost"
+                className="h-8 w-8 p-0"
+                title="Меню"
+                onClick={() => setOpenMenuIndex(openMenuIndex === i ? null : i)}
+              >
+                <HiOutlineDotsHorizontal className="text-text-primary" />
                 {openMenuIndex === i && (
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setOpenMenuIndex(null)} />
-                    <div className="absolute right-0 top-9 z-50 bg-surface border border-border rounded-lg shadow p-1 w-44">
-                      <button
-                        className="w-full text-left px-3 py-2 hover:bg-gray-50 flex items-center gap-2"
+                    <div className="absolute right-0 top-10 z-50 bg-surface border border-border rounded-xl shadow-lg p-2 w-48">
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start px-4 py-2"
+                        leftIcon={HiOutlinePencil}
                         onClick={() => { setOpenMenuIndex(null); openEdit(i); }}
                       >
-                        <HiOutlinePencil className="text-text-primary" />
-                        <span className="text-text-primary text-sm">Редактировать</span>
-                      </button>
-                      <button
-                        className="w-full text-left px-3 py-2 hover:bg-gray-50 flex items-center gap-2"
+                        Редактировать
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start px-4 py-2 text-error"
+                        leftIcon={HiOutlineTrash}
                         onClick={() => { setOpenMenuIndex(null); deleteNote(i); }}
                       >
-                        <HiOutlineTrash className="text-error" />
-                        <span className="text-error text-sm">Удалить</span>
-                      </button>
+                        Удалить
+                      </Button>
                     </div>
                   </>
                 )}
+              </Button>
+            </div>
+            
+            <div className="bg-gradient-to-br from-primary/5 to-secondary/5 border border-border rounded-xl p-4 mb-4">
+              <div className="flex items-start gap-3">
+                <HiOutlineSparkles className="text-secondary mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-text-primary text-sm font-semibold mb-1">Резюме ИИ</p>
+                  <p className="text-text-secondary text-xs">Сгенерированная выжимка ключевых идей из заметки</p>
+                </div>
               </div>
             </div>
-            <h3 className="text-text-primary font-semibold text-lg mb-2">{n.title}</h3>
-            <p className="text-text-secondary text-sm mb-4">{n.content}</p>
-            <div className="bg-surface border border-border rounded-lg p-3 flex items-center gap-2 mb-4">
-              <HiOutlineSparkles className="text-secondary" />
-              <div>
-                <p className="text-text-primary text-sm font-medium">Резюме ИИ</p>
-                <p className="text-text-secondary text-xs">Сгенерированная выжимка ключевых идей</p>
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
+            
+            <div className="flex items-center justify-between pt-4 border-t border-border">
               <div className="flex flex-wrap gap-2">
                 {n.tags.map(tag => (
-                  <span key={tag} className="bg-gray-100 text-text-secondary text-xs px-2 py-1 rounded-full">{tag}</span>
+                  <span key={tag} className="bg-primary/10 text-primary text-xs px-3 py-1 rounded-full font-medium">{tag}</span>
                 ))}
               </div>
-              <div className="text-text-secondary text-xs">
+              <div className="text-text-secondary text-xs font-medium">
                 {n.words} слов
               </div>
             </div>

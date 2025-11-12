@@ -10,6 +10,7 @@ import {
   HiOutlineClock,
   HiOutlineX
 } from 'react-icons/hi';
+import { Button } from '@/components/ui';
 
 function Stat({ label, value, icon, accent }: { label: string; value: number | string; icon?: React.ReactNode; accent?: 'green' | 'yellow' | 'blue' }) {
   return (
@@ -49,35 +50,39 @@ function TaskCard({
   priorityTone?: 'red' | 'yellow' | 'green';
 }) {
   return (
-    <div className="bg-surface border border-border rounded-2xl p-6">
-      <div className="flex flex-col sm:flex-row items-start justify-between gap-3">
-        <div className="flex items-start gap-3">
-          <span className="mt-1 h-4 w-4 rounded-full border border-border" />
-          <div>
-            <h3 className="text-text-primary font-semibold text-lg sm:text-xl">{title}</h3>
-            <p className="text-text-secondary mt-1">{description}</p>
-            <div className="flex flex-wrap items-center gap-2 mt-3">
-              {tags.map((t) => (
-                <Chip key={t}>{t}</Chip>
-              ))}
-              <span className="text-text-secondary text-xs flex items-center gap-1 ml-2"><HiOutlineCalendar /> Due: {due}</span>
-              <span className="text-text-secondary text-xs flex items-center gap-1"><HiOutlineClock /> Est: {est}</span>
-              <span className="text-text-secondary text-xs">From {source}</span>
-            </div>
+    <div className="bg-surface border border-border rounded-2xl p-6 hover:shadow-lg transition-all group">
+      <div className="flex items-start gap-4 mb-4">
+        <div className={`w-5 h-5 rounded-full border-2 mt-1 flex-shrink-0 ${
+          priorityTone === 'red' ? 'border-error' : priorityTone === 'yellow' ? 'border-warning' : 'border-success'
+        }`} />
+        <div className="flex-1">
+          <div className="flex items-start justify-between gap-4 mb-2">
+            <h3 className="text-text-primary font-bold text-xl group-hover:text-primary transition-colors">{title}</h3>
+            <span className={`text-xs px-3 py-1 rounded-full font-semibold flex-shrink-0 ${
+              priorityTone === 'red' ? 'text-error bg-error/10 border border-error/30' : priorityTone === 'yellow' ? 'text-warning bg-warning/10 border border-warning/30' : 'text-success bg-success/10 border border-success/30'
+            }`}> {priority} </span>
           </div>
-        </div>
-        <div className="sm:self-start mt-2 sm:mt-0">
-          <span className={`text-xs px-2 py-1 rounded-full border ${
-            priorityTone === 'red' ? 'text-error border-error/30 bg-error/10' : priorityTone === 'yellow' ? 'text-warning border-warning/30 bg-warning/10' : 'text-success border-success/30 bg-success/10'
-          }`}> {priority} </span>
+          <p className="text-text-secondary mb-4">{description}</p>
+          <div className="flex flex-wrap items-center gap-2 mb-4">
+            {tags.map((t) => (
+              <span key={t} className="bg-primary/10 text-primary text-xs px-3 py-1 rounded-full font-medium">{t}</span>
+            ))}
+            <span className="text-text-secondary text-xs flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full">
+              <HiOutlineCalendar className="text-xs" /> {due}
+            </span>
+            <span className="text-text-secondary text-xs flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full">
+              <HiOutlineClock className="text-xs" /> {est}
+            </span>
+            <span className="text-text-secondary text-xs bg-gray-100 px-2 py-1 rounded-full">From {source}</span>
+          </div>
         </div>
       </div>
 
-      <div className="bg-surface border border-border rounded-xl mt-4 p-3">
-        <div className="flex items-start gap-2 text-text-primary">
-          <HiOutlineSparkles className="text-secondary mt-0.5" />
+      <div className="bg-gradient-to-br from-primary/5 to-secondary/5 border border-border rounded-xl p-4">
+        <div className="flex items-start gap-3">
+          <HiOutlineSparkles className="text-secondary mt-0.5 flex-shrink-0" />
           <div>
-            <div className="text-sm font-medium">ИИ предложение</div>
+            <div className="text-sm font-semibold text-text-primary mb-1">ИИ предложение</div>
             <div className="text-text-secondary text-sm">Разбейте это на более мелкие подзадачи для лучшего отслеживания</div>
           </div>
         </div>
@@ -104,9 +109,9 @@ function Modal({ children, title, onClose }: { children: React.ReactNode; title:
       <div className="relative bg-surface border border-border rounded-2xl p-5 w-full max-w-xl shadow-lg">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-text-primary font-semibold text-lg">{title}</h3>
-          <button aria-label="Закрыть" onClick={onClose} className="p-2 rounded-lg hover:bg-gray-50">
+          <Button variant="ghost" aria-label="Закрыть" onClick={onClose} className="p-2 h-auto">
             <HiOutlineX className="text-text-primary" />
-          </button>
+          </Button>
         </div>
         {children}
       </div>
@@ -161,21 +166,28 @@ export default function TasksPage() {
 
   return (
     <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-        <div>
-          <h1 className="text-2xl sm:text-4xl font-bold text-text-primary mb-2">Задачи</h1>
-          <p className="text-text-secondary">Организуйте и отслеживайте ваши дела с помощью ИИ</p>
+      {/* Header - Cybrary Style */}
+      <div className="mb-8">
+        <div className="mb-6">
+          <h1 className="text-4xl sm:text-5xl font-bold text-text-primary mb-3">Задачи</h1>
+          <p className="text-lg text-text-secondary max-w-2xl">Организуйте и отслеживайте ваши дела с помощью ИИ. Превращайте идеи в выполнимые задачи и повышайте продуктивность.</p>
         </div>
         <div className="flex items-center gap-3 flex-wrap">
-          <button onClick={() => setIsAiOpen(true)} className="h-12 px-5 bg-surface border border-border rounded-full hover:bg-gray-50 transition-colors flex items-center gap-2">
-            <HiOutlineSparkles className="text-text-primary" />
-            <span className="text-text-primary font-medium">ИИ предложения</span>
-          </button>
-          <button onClick={() => setIsNewTaskOpen(true)} className="h-12 px-5 bg-gradient-to-r from-primary to-secondary text-white rounded-full flex items-center gap-2 hover:opacity-90 transition-opacity">
-            <HiOutlinePlus />
-            <span className="font-medium">Новая задача</span>
-          </button>
+          <Button 
+            onClick={() => setIsNewTaskOpen(true)} 
+            leftIcon={HiOutlinePlus}
+            size="lg"
+          >
+            Новая задача
+          </Button>
+          <Button 
+            onClick={() => setIsAiOpen(true)} 
+            variant="secondary"
+            leftIcon={HiOutlineSparkles}
+            size="lg"
+          >
+            ИИ предложения
+          </Button>
         </div>
       </div>
 
@@ -190,18 +202,15 @@ export default function TasksPage() {
 
       {/* Filters */}
       <div className="flex items-center gap-3 flex-wrap">
-        <button className="h-10 px-4 bg-surface border border-border rounded-full hover:bg-gray-50 transition-colors flex items-center gap-2">
-          <HiOutlineAdjustments className="text-text-primary" />
-          <span className="text-text-primary">Фильтр</span>
-        </button>
-        <button className="h-10 px-4 bg-surface border border-border rounded-full hover:bg-gray-50 transition-colors flex items-center gap-2">
-          <HiOutlineFlag className="text-text-primary" />
-          <span className="text-text-primary">Приоритет</span>
-        </button>
-        <button className="h-10 px-4 bg-surface border border-border rounded-full hover:bg-gray-50 transition-colors flex items-center gap-2">
-          <HiOutlineCalendar className="text-text-primary" />
-          <span className="text-text-primary">Срок выполнения</span>
-        </button>
+        <Button variant="secondary" size="sm" leftIcon={HiOutlineAdjustments}>
+          Фильтр
+        </Button>
+        <Button variant="secondary" size="sm" leftIcon={HiOutlineFlag}>
+          Приоритет
+        </Button>
+        <Button variant="secondary" size="sm" leftIcon={HiOutlineCalendar}>
+          Срок выполнения
+        </Button>
       </div>
 
       {/* Tasks list */}
@@ -268,12 +277,12 @@ export default function TasksPage() {
               />
             </div>
             <div className="flex justify-end gap-3 pt-2">
-              <button type="button" onClick={() => setIsNewTaskOpen(false)} className="h-10 px-4 bg-surface border border-border rounded-full hover:bg-gray-50 text-text-primary">
+              <Button type="button" variant="secondary" onClick={() => setIsNewTaskOpen(false)}>
                 Отмена
-              </button>
-              <button type="submit" className="h-10 px-4 bg-gradient-to-r from-primary to-secondary text-white rounded-full hover:opacity-90">
+              </Button>
+              <Button type="submit">
                 Добавить
-              </button>
+              </Button>
             </div>
           </form>
         </Modal>
@@ -292,8 +301,8 @@ export default function TasksPage() {
                   <div className="text-text-primary font-medium">{s.title}</div>
                   <div className="text-text-secondary text-sm">{s.description}</div>
                 </div>
-                <button
-                  className="px-3 h-9 rounded-full bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90"
+                <Button
+                  size="sm"
                   onClick={() => {
                     setTasks((prev) => [
                       {
@@ -311,12 +320,12 @@ export default function TasksPage() {
                   }}
                 >
                   Добавить
-                </button>
+                </Button>
               </div>
             ))}
           </div>
           <div className="flex justify-end mt-4">
-            <button onClick={() => setIsAiOpen(false)} className="h-10 px-4 bg-surface border border-border rounded-full hover:bg-gray-50 text-text-primary">Готово</button>
+            <Button variant="secondary" onClick={() => setIsAiOpen(false)}>Готово</Button>
           </div>
         </Modal>
       )}
