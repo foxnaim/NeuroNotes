@@ -15,6 +15,12 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // Optimize for faster navigation
+  experimental: {
+    optimizePackageImports: ['react-icons/hi'],
+  },
+  // Enable faster page transitions
+  reactStrictMode: true,
 };
 
 export default nextConfig;

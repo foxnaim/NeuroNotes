@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { 
@@ -11,7 +12,7 @@ import {
 } from 'react-icons/hi';
 import { Button, Card } from '@/components/ui';
 
-export default function HomePage() {
+export default function GreetingsPage() {
   const router = useRouter();
 
   return (
@@ -125,7 +126,7 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
           {/* Learn Card */}
-          <Card hover className="p-8">
+          <Card className="p-8">
             <h3 
               className="text-xl font-bold mb-3"
               style={{ color: 'var(--color-text-primary)' }}
@@ -141,12 +142,14 @@ export default function HomePage() {
             <div 
               className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center"
             >
-              <HiOutlineDocumentText className="text-white text-2xl" />
+              <div className="text-white text-2xl">
+                {React.createElement(HiOutlineDocumentText as any)}
+              </div>
             </div>
           </Card>
 
           {/* Practice Card */}
-          <Card hover className="p-8">
+          <Card className="p-8">
             <h3 
               className="text-xl font-bold mb-3"
               style={{ color: 'var(--color-text-primary)' }}
@@ -162,12 +165,14 @@ export default function HomePage() {
             <div 
               className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center"
             >
-              <HiOutlineCheckCircle className="text-white text-2xl" />
+              <div className="text-white text-2xl">
+                {React.createElement(HiOutlineCheckCircle as any)}
+              </div>
             </div>
           </Card>
 
           {/* Prove Card */}
-          <Card hover className="p-8">
+          <Card className="p-8">
             <h3 
               className="text-xl font-bold mb-3"
               style={{ color: 'var(--color-text-primary)' }}
@@ -183,7 +188,9 @@ export default function HomePage() {
             <div 
               className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center"
             >
-              <HiOutlineLightningBolt className="text-white text-2xl" />
+              <div className="text-white text-2xl">
+                {React.createElement(HiOutlineLightningBolt as any)}
+              </div>
             </div>
           </Card>
         </div>
@@ -235,7 +242,9 @@ export default function HomePage() {
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center flex-shrink-0">
-                    <HiOutlineSparkles className="text-white text-xl" />
+                    <div className="text-white text-xl">
+                      {React.createElement(HiOutlineSparkles as any)}
+                    </div>
                   </div>
                   <div>
                     <h4 
@@ -251,7 +260,9 @@ export default function HomePage() {
                 </div>
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center flex-shrink-0">
-                    <HiOutlineDocumentText className="text-white text-xl" />
+                    <div className="text-white text-xl">
+                      {React.createElement(HiOutlineDocumentText as any)}
+                    </div>
                   </div>
                   <div>
                     <h4 
@@ -267,7 +278,9 @@ export default function HomePage() {
                 </div>
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center flex-shrink-0">
-                    <HiOutlineLightningBolt className="text-white text-xl" />
+                    <div className="text-white text-xl">
+                      {React.createElement(HiOutlineLightningBolt as any)}
+                    </div>
                   </div>
                   <div>
                     <h4 
@@ -294,7 +307,9 @@ export default function HomePage() {
             <div className="space-y-4">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center flex-shrink-0">
-                  <HiOutlineDocumentText className="text-white text-xl" />
+                  <div className="text-white text-xl">
+                    {React.createElement(HiOutlineDocumentText as any)}
+                  </div>
                 </div>
                 <div>
                   <h4 
@@ -310,7 +325,9 @@ export default function HomePage() {
               </div>
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center flex-shrink-0">
-                  <HiOutlineCheckCircle className="text-white text-xl" />
+                  <div className="text-white text-xl">
+                    {React.createElement(HiOutlineCheckCircle as any)}
+                  </div>
                 </div>
                 <div>
                   <h4 
@@ -326,7 +343,9 @@ export default function HomePage() {
               </div>
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center flex-shrink-0">
-                  <HiOutlineSparkles className="text-white text-xl" />
+                  <div className="text-white text-xl">
+                    {React.createElement(HiOutlineSparkles as any)}
+                  </div>
                 </div>
                 <div>
                   <h4 

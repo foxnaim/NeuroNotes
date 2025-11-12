@@ -1,6 +1,8 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
+import React from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { 
   HiOutlineHome,
   HiOutlineDocumentText,
@@ -15,24 +17,24 @@ interface NavItem {
 }
 
 const navigationItems: NavItem[] = [
-  { id: 'home', path: '/', icon: HiOutlineHome },
+  { id: 'home', path: '/project', icon: HiOutlineHome },
   { id: 'notes', path: '/notes', icon: HiOutlineDocumentText },
   { id: 'tasks', path: '/tasks', icon: HiOutlineCheckCircle },
   { id: 'notifications', path: '/settings', icon: HiOutlineBell },
 ];
 
 export default function BottomNavigationBar() {
-  const router = useRouter();
   const pathname = usePathname();
 
   const isActive = (path: string) => {
-    if (path === '/') {
-      return pathname === '/';
+    if (path === '/project') {
+      return pathname === '/project' || pathname.startsWith('/project');
     }
     return pathname.startsWith(path);
   };
 
-  // Скрываем навигацию на главной странице
+  // Скрываем навигацию только на приветственном окне (главной странице)
+  // На странице /project навигация должна быть видна
   if (pathname === '/') {
     return null;
   }
@@ -53,19 +55,22 @@ export default function BottomNavigationBar() {
           const active = isActive(item.path);
           
           return (
-            <button
+            <Link
               key={item.id}
-              onClick={() => router.push(item.path)}
+              href={item.path}
+              prefetch={true}
               className="flex flex-col items-center gap-1.5 relative transition-all"
               aria-label={item.id}
             >
-              <IconComponent 
+              <div
                 className="transition-colors"
                 style={{ 
                   fontSize: '24px',
                   color: active ? 'var(--color-primary)' : 'var(--color-text-secondary)',
                 }}
-              />
+              >
+                {React.createElement(IconComponent as any)}
+              </div>
               {active && (
                 <div 
                   className="h-0.5 w-6 rounded-full transition-all"
@@ -75,7 +80,7 @@ export default function BottomNavigationBar() {
                   }}
                 />
               )}
-            </button>
+            </Link>
           );
         })}
       </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, startTransition } from 'react';
 import { HiOutlineChevronDown } from 'react-icons/hi';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -100,21 +100,40 @@ export default function Header({}: HeaderProps) {
               <div className="absolute top-full right-0 mt-2 w-56 bg-surface border border-border rounded-xl shadow-lg py-2 z-50">
                 <Button
                   variant="ghost"
-                  onClick={() => { router.push('/notes'); setActiveDropdown(null); }}
+                  onClick={() => { 
+                    setActiveDropdown(null);
+                    startTransition(() => router.push('/project'));
+                  }}
+                  className="w-full justify-start px-4 py-2"
+                >
+                  Трекер продуктивности
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => { 
+                    setActiveDropdown(null);
+                    startTransition(() => router.push('/notes'));
+                  }}
                   className="w-full justify-start px-4 py-2"
                 >
                   Заметки
                 </Button>
                 <Button
                   variant="ghost"
-                  onClick={() => { router.push('/tasks'); setActiveDropdown(null); }}
+                  onClick={() => { 
+                    setActiveDropdown(null);
+                    startTransition(() => router.push('/tasks'));
+                  }}
                   className="w-full justify-start px-4 py-2"
                 >
                   Задачи
                 </Button>
                 <Button
                   variant="ghost"
-                  onClick={() => { router.push('/ai'); setActiveDropdown(null); }}
+                  onClick={() => { 
+                    setActiveDropdown(null);
+                    startTransition(() => router.push('/ai'));
+                  }}
                   className="w-full justify-start px-4 py-2"
                 >
                   ИИ Помощник
@@ -125,13 +144,16 @@ export default function Header({}: HeaderProps) {
         </div>
         <Button
           variant="ghost"
-          onClick={() => router.push('/settings')}
+          onClick={() => {
+            setActiveDropdown(null);
+            startTransition(() => router.push('/settings'));
+          }}
           className="px-2 sm:px-3 py-1.5 sm:py-2 h-auto text-sm hidden lg:inline-flex"
         >
           Настройки
         </Button>
         <Button
-          onClick={() => router.push('/ai')}
+          onClick={() => startTransition(() => router.push('/ai'))}
           size="sm"
           className="px-3 sm:px-4 py-1.5 sm:py-2 text-sm"
         >

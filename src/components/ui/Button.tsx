@@ -1,6 +1,6 @@
 'use client';
 
-import { ButtonHTMLAttributes, ReactNode } from 'react';
+import React, { ButtonHTMLAttributes, ReactNode } from 'react';
 import { IconType } from 'react-icons';
 
 type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost';
@@ -84,9 +84,9 @@ function ButtonComponent({
       }}
       {...props}
     >
-      {LeftIcon && <LeftIcon style={{ color: variantStyles.color || 'var(--color-text-primary)' }} />}
+      {LeftIcon && React.createElement(LeftIcon as any, { style: { color: variantStyles.color || 'var(--color-text-primary)' } })}
       {children}
-      {RightIcon && <RightIcon style={{ color: variantStyles.color || 'var(--color-text-primary)' }} />}
+      {RightIcon && React.createElement(RightIcon as any, { style: { color: variantStyles.color || 'var(--color-text-primary)' } })}
     </button>
   );
 }
