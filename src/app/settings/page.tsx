@@ -13,7 +13,7 @@ export default function SettingsPage() {
     <div className="p-8 space-y-6">
       <h1 className="text-4xl font-bold text-text-primary">Настройки</h1>
       <Suspense fallback={<div className="flex items-center justify-center h-64"><div className="text-text-secondary">Загрузка...</div></div>}>
-        <SettingsClient />
+      <SettingsClient />
       </Suspense>
     </div>
   );

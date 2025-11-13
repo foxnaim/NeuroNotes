@@ -49,7 +49,7 @@ export default function GreetingsPage() {
                 <span className="text-white">
                   повышают продуктивность
                 </span>
-              </h1>
+            </h1>
               
               {/* Subtitle */}
               <p 
@@ -59,25 +59,25 @@ export default function GreetingsPage() {
                 }}
               >
                 Структурированное обучение и организация с помощью ИИ помогает вам лучше управлять идеями и задачами. С кураторскими путями развития, программами подготовки и умным анализом мы предлагаем лучшее решение.
-              </p>
+            </p>
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row items-start gap-4">
-                <Button 
+              <Button 
                   onClick={() => router.push('/notes')}
-                  size="lg"
+                size="lg"
                   rightIcon={HiOutlineArrowRight}
-                >
+              >
                   Начать обучение бесплатно
-                </Button>
-                <Button 
+              </Button>
+              <Button 
                   onClick={() => router.push('/ai')}
                   variant="secondary"
-                  size="lg"
+                size="lg"
                   className="bg-transparent border-2 border-white/20 text-white hover:bg-white/10"
-                >
+              >
                   NeuroNotes для бизнеса
-                </Button>
+              </Button>
               </div>
             </div>
 
@@ -118,8 +118,8 @@ export default function GreetingsPage() {
               fontFamily: 'var(--font-inter), Inter, sans-serif',
               color: 'var(--color-text-primary)',
               fontWeight: 700,
-            }}
-          >
+              }}
+            >
             Изучайте. Практикуйте. Доказывайте.
           </h2>
         </div>
@@ -144,10 +144,10 @@ export default function GreetingsPage() {
             >
               <div className="text-white text-2xl">
                 {React.createElement(HiOutlineDocumentText as any)}
-              </div>
-            </div>
-          </Card>
-
+      </div>
+          </div>
+        </Card>
+        
           {/* Practice Card */}
           <Card className="p-8">
             <h3 
@@ -168,9 +168,9 @@ export default function GreetingsPage() {
               <div className="text-white text-2xl">
                 {React.createElement(HiOutlineCheckCircle as any)}
               </div>
-            </div>
-          </Card>
-
+          </div>
+        </Card>
+        
           {/* Prove Card */}
           <Card className="p-8">
             <h3 
@@ -191,9 +191,9 @@ export default function GreetingsPage() {
               <div className="text-white text-2xl">
                 {React.createElement(HiOutlineLightningBolt as any)}
               </div>
-            </div>
-          </Card>
-        </div>
+          </div>
+        </Card>
+      </div>
 
         {/* CTA Buttons Below Cards - Cybrary Style */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -212,8 +212,8 @@ export default function GreetingsPage() {
             NeuroNotes для бизнеса
           </Button>
         </div>
-      </div>
-
+          </div>
+          
       {/* NeuroNotes for Business Section - Cybrary Style */}
       <div className="bg-surface border-t border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
@@ -239,7 +239,7 @@ export default function GreetingsPage() {
               </Button>
             </div>
             <div className="bg-background border border-border rounded-2xl p-8">
-              <div className="space-y-4">
+          <div className="space-y-4">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center flex-shrink-0">
                     <div className="text-white text-xl">
@@ -280,8 +280,8 @@ export default function GreetingsPage() {
                   <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center flex-shrink-0">
                     <div className="text-white text-xl">
                       {React.createElement(HiOutlineLightningBolt as any)}
-                    </div>
-                  </div>
+              </div>
+              </div>
                   <div>
                     <h4 
                       className="font-bold mb-2"
@@ -292,14 +292,14 @@ export default function GreetingsPage() {
                     <p style={{ color: 'var(--color-text-secondary)' }}>
                       Адаптированная под ваши потребности
                     </p>
-                  </div>
-                </div>
               </div>
-            </div>
+              </div>
+              </div>
+              </div>
           </div>
         </div>
-      </div>
-
+            </div>
+            
       {/* NeuroNotes for Individuals Section - Cybrary Style */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -374,15 +374,15 @@ export default function GreetingsPage() {
             >
               Выделитесь из толпы и продвиньте свою карьеру с помощью путей развития NeuroNotes, соответствующих ролям, целевых путей навыков и лучших программ подготовки к сертификации.
             </p>
-            <Button 
+              <Button 
               onClick={() => router.push('/notes')}
-              size="lg"
+                size="lg"
               rightIcon={HiOutlineArrowRight}
-            >
+              >
               Начать обучение бесплатно
-            </Button>
-          </div>
-        </div>
+              </Button>
+      </div>
+      </div>
       </div>
     </div>
   );

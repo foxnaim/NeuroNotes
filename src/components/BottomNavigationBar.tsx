@@ -6,20 +6,23 @@ import Link from 'next/link';
 import { 
   HiOutlineHome,
   HiOutlineDocumentText,
-  HiOutlineCheckCircle,
-  HiOutlineBell
+  HiOutlineChartBar,
+  HiOutlineBell,
+  HiOutlineSparkles
 } from 'react-icons/hi';
 
 interface NavItem {
   id: string;
   path: string;
   icon: React.ComponentType<{ className?: string }>;
+  isCenter?: boolean;
 }
 
 const navigationItems: NavItem[] = [
   { id: 'home', path: '/project', icon: HiOutlineHome },
-  { id: 'notes', path: '/notes', icon: HiOutlineDocumentText },
-  { id: 'tasks', path: '/tasks', icon: HiOutlineCheckCircle },
+  { id: 'integrations', path: '/integrations', icon: HiOutlineDocumentText },
+  { id: 'ai-assistant', path: '/ai-assistant', icon: HiOutlineSparkles, isCenter: true },
+  { id: 'analytics', path: '/analytics', icon: HiOutlineChartBar },
   { id: 'notifications', path: '/settings', icon: HiOutlineBell },
 ];
 
@@ -53,6 +56,7 @@ export default function BottomNavigationBar() {
         {navigationItems.map((item) => {
           const IconComponent = item.icon;
           const active = isActive(item.path);
+          const isCenter = item.isCenter;
           
           return (
             <Link
@@ -65,7 +69,7 @@ export default function BottomNavigationBar() {
               <div
                 className="transition-colors"
                 style={{ 
-                  fontSize: '24px',
+                  fontSize: isCenter ? '28px' : '24px',
                   color: active ? 'var(--color-primary)' : 'var(--color-text-secondary)',
                 }}
               >

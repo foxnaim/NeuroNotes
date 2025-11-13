@@ -164,10 +164,15 @@ const timeTracking = [
 ];
 
 export default function HomePage() {
-  const [activeTab, setActiveTab] = useState<'habits' | 'finance' | 'tasks' | 'calendar'>('habits');
+  const [activeSection, setActiveSection] = useState<'project' | 'integrations' | 'analytics' | 'ai-assistant' | 'settings'>('project');
+  const [projectTab, setProjectTab] = useState<'habits' | 'finance' | 'tasks' | 'calendar'>('habits');
 
-  const handleTabChange = (tabId: 'habits' | 'finance' | 'tasks' | 'calendar') => {
-    setActiveTab(tabId);
+  const handleSectionChange = (sectionId: 'project' | 'integrations' | 'analytics' | 'ai-assistant' | 'settings') => {
+    setActiveSection(sectionId);
+  };
+
+  const handleProjectTabChange = (tabId: 'habits' | 'finance' | 'tasks' | 'calendar') => {
+    setProjectTab(tabId);
   };
 
   // Мемоизация данных для круговой диаграммы
@@ -221,39 +226,45 @@ export default function HomePage() {
     `0 24px 48px -30px color-mix(in srgb, ${colorVar} 25%, rgba(0, 0, 0, ${opacity}))`;
 
   return (
-    <div className="min-h-full px-4 sm:px-6 lg:px-8 py-10">
+    <div className="min-h-full px-4 sm:px-6 lg:px-8 py-10 pb-24">
       <div className="max-w-7xl mx-auto space-y-10">
-        {/* Табы для переключения между секциями */}
-        <div className="flex gap-2 overflow-x-auto pb-2">
-          {[
-            { id: 'habits', label: 'Привычки' },
-            { id: 'finance', label: 'Финансы' },
-            { id: 'tasks', label: 'Задачи' },
-            { id: 'calendar', label: 'Календарь' },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => handleTabChange(tab.id as any)}
-              className={`px-6 py-3 rounded-xl font-semibold text-sm whitespace-nowrap transition-all ${
-                activeTab === tab.id
-                  ? 'bg-primary text-white shadow-lg'
-                  : 'bg-surface/80 text-text-secondary hover:bg-surface border border-border'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+
+        {/* Project Section */}
+        {activeSection === 'project' && (
+          <div className="space-y-6">
+            {/* Табы для переключения между секциями проекта */}
+            <div className="flex gap-2 overflow-x-auto pb-2">
+              {[
+                { id: 'habits', label: 'Привычки' },
+                { id: 'finance', label: 'Финансы' },
+                { id: 'tasks', label: 'Задачи' },
+                { id: 'calendar', label: 'Календарь' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => handleProjectTabChange(tab.id as any)}
+                  className={`px-6 py-3 rounded-xl font-semibold text-sm whitespace-nowrap transition-all ${
+                    projectTab === tab.id
+                      ? 'bg-primary text-white shadow-lg'
+                      : 'bg-surface/80 text-text-secondary hover:bg-surface border border-border'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Секция привычек - улучшенная версия */}
-        {activeTab === 'habits' && (
+        {activeSection === 'project' && projectTab === 'habits' && (
         <div className="space-y-6">
           {/* Быстрый обзор на сегодня */}
           <motion.section 
             className="border rounded-3xl p-6 sm:p-8 backdrop-blur-xl"
             style={{
-              background: glowGradient(8, 6),
-              borderColor: borderSoft(15),
+              background: glowGradient(12, 8),
+              borderColor: borderSoft(20),
               boxShadow: shadowSoft('var(--color-primary)', 0.24)
             }}
             initial={{ opacity: 0, y: 20 }}
@@ -308,8 +319,8 @@ export default function HomePage() {
                     key={habit}
                     className="border rounded-xl p-4 transition-all cursor-pointer group habit-card"
                     style={{
-                      background: glowGradient(6, 4),
-                      borderColor: borderSoft(12),
+                      background: glowGradient(12, 8),
+                      borderColor: borderSoft(20),
                       boxShadow: shadowSoft('var(--color-primary)', 0.2)
                     }}
                     initial={{ opacity: 0, scale: 0.9, y: 10 }}
@@ -350,8 +361,8 @@ export default function HomePage() {
             <motion.div 
               className="border rounded-2xl p-4"
               style={{
-                background: surfaceSoft(8),
-                borderColor: borderSoft(15),
+                background: surfaceSoft(20),
+                borderColor: borderSoft(20),
                 boxShadow: shadowSoft('var(--color-primary)', 0.22)
               }}
               initial={{ opacity: 0, y: 10 }}
@@ -365,7 +376,7 @@ export default function HomePage() {
               <div 
                 className="h-3 rounded-full overflow-hidden"
                 style={{
-                  backgroundColor: surfaceSoft(10)
+                  backgroundColor: surfaceSoft(20)
                 }}
               >
                 <motion.div
@@ -397,8 +408,8 @@ export default function HomePage() {
           <motion.section 
             className="border rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-10 backdrop-blur-xl"
             style={{
-              background: glowGradient(7, 5),
-              borderColor: borderSoft(15),
+              background: glowGradient(12, 8),
+              borderColor: borderSoft(20),
               boxShadow: shadowSoft('var(--color-primary)', 0.26)
             }}
             initial={{ opacity: 0, y: 30 }}
@@ -446,8 +457,8 @@ export default function HomePage() {
                         key={week}
                         className="rounded-xl py-2 font-semibold"
                         style={{
-                          background: glowGradient(6, 4),
-                          borderColor: borderSoft(12),
+                          background: glowGradient(12, 8),
+                          borderColor: borderSoft(20),
                           borderWidth: '1px',
                           borderStyle: 'solid',
                           color: 'var(--color-text-primary)',
@@ -485,8 +496,8 @@ export default function HomePage() {
                   <div 
                     className="rounded-2xl border p-4"
                     style={{
-                      borderColor: borderSoft(12),
-                      background: surfaceSoft(8),
+                      borderColor: borderSoft(20),
+                      background: surfaceSoft(20),
                       boxShadow: shadowSoft('var(--color-primary)', 0.18)
                     }}
                   >
@@ -505,10 +516,10 @@ export default function HomePage() {
                             key={day}
                             className="h-6 w-6 flex items-center justify-center rounded-md text-[11px] font-semibold"
                             style={{
-                              background: isHighlighted ? glowGradient(8, 6) : surfaceSoft(10),
+                              background: isHighlighted ? glowGradient(12, 8) : surfaceSoft(20),
                               color: isHighlighted ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
                               boxShadow: isHighlighted ? shadowSoft('var(--color-primary)', 0.2) : 'none',
-                              border: `1px solid ${isHighlighted ? borderSoft(15) : borderSoft(12)}`
+                              border: `1px solid ${isHighlighted ? borderSoft(20) : borderSoft(20)}`
                             }}
                           >
                             {day}
@@ -525,8 +536,8 @@ export default function HomePage() {
                                 key={day}
                                 className="h-5 w-5 rounded-sm border flex items-center justify-center text-[10px]"
                                 style={{
-                                  background: (day + idx) % 3 === 0 ? glowGradient(8, 6) : surfaceSoft(8),
-                                  borderColor: (day + idx) % 3 === 0 ? borderSoft(15) : borderSoft(10),
+                                  background: (day + idx) % 3 === 0 ? glowGradient(12, 8) : surfaceSoft(20),
+                                  borderColor: (day + idx) % 3 === 0 ? borderSoft(20) : borderSoft(20),
                                   color: (day + idx) % 3 === 0 ? 'var(--color-text-primary)' : 'transparent',
                                   boxShadow: (day + idx) % 3 === 0 ? shadowSoft('var(--color-primary)', 0.18) : 'none'
                                 }}
@@ -550,8 +561,8 @@ export default function HomePage() {
           <motion.div 
             className="lg:col-span-2 border rounded-3xl p-6 backdrop-blur-xl"
             style={{
-              background: glowGradient(6, 5),
-              borderColor: borderSoft(15),
+              background: glowGradient(12, 8),
+              borderColor: borderSoft(20),
               boxShadow: shadowSoft('var(--color-primary)', 0.24)
             }}
             initial={{ opacity: 0, x: -20 }}
@@ -573,8 +584,9 @@ export default function HomePage() {
                   <span className="text-xs w-10" style={{ color: 'var(--color-text-secondary)' }}>{month}</span>
                   <div className="flex gap-1 flex-1">
                     {Array.from({ length: 31 }, (_, day) => {
-                      const intensity = Math.floor(Math.random() * 5); // 0-4 для разных уровней активности
-                      const opacity = intensity === 0 ? 0.3 : intensity === 1 ? 0.3 : intensity === 2 ? 0.5 : intensity === 3 ? 0.7 : 1;
+                      // Детерминированная генерация на основе индекса месяца и дня для SSR
+                      const seed = (monthIdx * 31 + day) * 17 + 23;
+                      const intensity = seed % 5; // 0-4 для разных уровней активности
                       return (
                         <div
                           key={day}
@@ -582,7 +594,7 @@ export default function HomePage() {
                           style={{
                             backgroundColor: intensity === 0 
                               ? 'color-mix(in srgb, var(--color-background) 30%, transparent)'
-                              : `color-mix(in srgb, var(--color-success) ${opacity * 100}%, transparent)`
+                              : `color-mix(in srgb, var(--color-success) ${intensity === 1 ? 30 : intensity === 2 ? 50 : intensity === 3 ? 70 : 100}%, transparent)`
                           }}
                           title={`${day + 1} ${month}`}
                         />
@@ -609,8 +621,8 @@ export default function HomePage() {
           <motion.div 
             className="border rounded-3xl p-6 backdrop-blur-xl"
             style={{
-              background: glowGradient(6, 4),
-              borderColor: borderSoft(15),
+              background: glowGradient(12, 8),
+              borderColor: borderSoft(20),
               boxShadow: shadowSoft('var(--color-primary)', 0.22)
             }}
             initial={{ opacity: 0, x: 20 }}
@@ -646,7 +658,7 @@ export default function HomePage() {
                   <div 
                     className="h-2 rounded-full"
                     style={{
-                      backgroundColor: surfaceSoft(10)
+                      backgroundColor: surfaceSoft(20)
                     }}
                   >
                     <motion.div
@@ -703,8 +715,8 @@ export default function HomePage() {
             <motion.div 
               className="border rounded-xl p-4"
               style={{
-                backgroundColor: surfaceSoft(8),
-                borderColor: borderSoft(12),
+                backgroundColor: surfaceSoft(20),
+                borderColor: borderSoft(20),
                 boxShadow: shadowSoft('var(--color-success)', 0.18)
               }}
               initial={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -724,8 +736,8 @@ export default function HomePage() {
             <motion.div 
               className="border rounded-xl p-4"
               style={{
-                backgroundColor: surfaceSoft(8),
-                borderColor: borderSoft(12),
+                backgroundColor: surfaceSoft(20),
+                borderColor: borderSoft(20),
                 boxShadow: shadowSoft('var(--color-primary)', 0.18)
               }}
               initial={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -745,8 +757,8 @@ export default function HomePage() {
             <motion.div 
               className="border rounded-xl p-4"
               style={{
-                backgroundColor: surfaceSoft(8),
-                borderColor: borderSoft(12),
+                backgroundColor: surfaceSoft(20),
+                borderColor: borderSoft(20),
                 boxShadow: shadowSoft('var(--color-warning)', 0.18)
               }}
               initial={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -766,8 +778,8 @@ export default function HomePage() {
             <motion.div 
               className="border rounded-xl p-4"
               style={{
-                backgroundColor: surfaceSoft(8),
-                borderColor: borderSoft(12),
+                backgroundColor: surfaceSoft(20),
+                borderColor: borderSoft(20),
                 boxShadow: shadowSoft('var(--color-secondary)', 0.18)
               }}
               initial={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -790,13 +802,13 @@ export default function HomePage() {
         )}
 
         {/* Еженедельный обзор и прогресс - только для таба habits */}
-        {activeTab === 'habits' && (
+        {activeSection === 'project' && projectTab === 'habits' && (
         <section className="grid lg:grid-cols-[2fr_1fr] gap-6">
           <div 
             className="border rounded-3xl p-6 space-y-6 backdrop-blur-xl"
             style={{
-              background: glowGradient(6, 4),
-              borderColor: borderSoft(15),
+              background: glowGradient(12, 8),
+              borderColor: borderSoft(20),
               boxShadow: shadowSoft('var(--color-primary)', 0.24)
             }}
           >
@@ -811,8 +823,8 @@ export default function HomePage() {
                   key={week.week} 
                   className="rounded-2xl border p-4 shadow-inner"
                   style={{
-                    backgroundColor: surfaceSoft(10),
-                    borderColor: borderSoft(12)
+                    backgroundColor: surfaceSoft(20),
+                    borderColor: borderSoft(20)
                   }}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -863,7 +875,7 @@ export default function HomePage() {
                     <div 
                       className="h-2 rounded-full"
                       style={{
-                        backgroundColor: surfaceSoft(10)
+                        backgroundColor: surfaceSoft(20)
                       }}
                     >
                       <motion.div
@@ -913,8 +925,18 @@ export default function HomePage() {
         )}
 
         {/* Топ-3 задачи на день - только для таба habits */}
-        {activeTab === 'habits' && (
-        <section className="bg-surface/80 border border-border rounded-3xl p-6 space-y-6 backdrop-blur-xl">
+        {activeSection === 'project' && projectTab === 'habits' && (
+        <motion.section 
+          className="border rounded-3xl p-6 space-y-6 backdrop-blur-xl"
+          style={{
+            background: glowGradient(12, 8),
+            borderColor: borderSoft(20),
+            boxShadow: shadowSoft('var(--color-primary)', 0.24)
+          }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold text-text-primary">Топ-3 задачи на день</h2>
             <span className="text-text-secondary text-sm">Август 2025</span>
@@ -923,7 +945,15 @@ export default function HomePage() {
           <div className="overflow-x-auto">
             <div className="min-w-[1100px] grid grid-cols-4 gap-4">
               {topTasks.map((day) => (
-                <div key={day} className="bg-background/75 border border-border rounded-2xl p-4 space-y-3 shadow-inner">
+                <div 
+                  key={day} 
+                  className="border rounded-2xl p-4 space-y-3"
+                  style={{
+                    background: surfaceSoft(20),
+                    borderColor: borderSoft(20),
+                    boxShadow: shadowSoft('var(--color-primary)', 0.18)
+                  }}
+                >
                   <div className="flex items-center justify-between text-sm text-text-secondary">
                     <span>{day} день</span>
                     <span className="w-2 h-2 rounded-full bg-primary/70" />
@@ -940,12 +970,22 @@ export default function HomePage() {
               ))}
             </div>
           </div>
-        </section>
+        </motion.section>
         )}
 
         {/* Цели на год и привычки - только для таба habits */}
-        {activeTab === 'habits' && (
-        <section className="bg-surface/80 border border-border rounded-3xl p-6 space-y-6 backdrop-blur-xl">
+        {activeSection === 'project' && projectTab === 'habits' && (
+        <motion.section 
+          className="border rounded-3xl p-6 space-y-6 backdrop-blur-xl"
+          style={{
+            background: glowGradient(12, 8),
+            borderColor: borderSoft(20),
+            boxShadow: shadowSoft('var(--color-primary)', 0.24)
+          }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold text-text-primary">Цели на год и привычки</h2>
             <Button size="sm" variant="secondary">
@@ -961,34 +1001,63 @@ export default function HomePage() {
 
               {yearlyGoals.map((row) => (
                 <div key={row.title} className="contents">
-                  <div className="bg-background/75 border border-border rounded-xl p-3 font-semibold text-text-primary">
+                  <div 
+                    className="border rounded-xl p-3 font-semibold text-text-primary"
+                    style={{
+                      background: surfaceSoft(20),
+                      borderColor: borderSoft(20)
+                    }}
+                  >
                     {row.title}
           </div>
-                  <div className="bg-background/60 border border-border rounded-xl p-3 text-text-secondary">
+                  <div 
+                    className="border rounded-xl p-3 text-text-secondary"
+                    style={{
+                      background: surfaceSoft(26),
+                      borderColor: borderSoft(20)
+                    }}
+                  >
                     {row.daily || ""}
                   </div>
-                  <div className="bg-background/60 border border-border rounded-xl p-3 text-text-secondary">
+                  <div 
+                    className="border rounded-xl p-3 text-text-secondary"
+                    style={{
+                      background: surfaceSoft(26),
+                      borderColor: borderSoft(20)
+                    }}
+                  >
                     {row.weekly || ""}
                   </div>
-                  <div className="bg-background/60 border border-border rounded-xl p-3 text-text-secondary">
+                  <div 
+                    className="border rounded-xl p-3 text-text-secondary"
+                    style={{
+                      background: surfaceSoft(26),
+                      borderColor: borderSoft(20)
+                    }}
+                  >
                     {row.monthly || ""}
                   </div>
                 </div>
               ))}
             </div>
           </div>
-        </section>
+        </motion.section>
         )}
 
         {/* Финансовый трекер - улучшенная версия */}
-        {activeTab === 'finance' && (
+        {activeSection === 'project' && projectTab === 'finance' && (
         <div className="space-y-6">
             {/* Основные метрики */}
-            <section 
-              className="border border-border rounded-3xl p-6 sm:p-8 backdrop-blur-xl"
+            <motion.section 
+              className="border rounded-3xl p-6 sm:p-8 backdrop-blur-xl"
               style={{
-                background: `linear-gradient(135deg, color-mix(in srgb, var(--color-success) 10%, transparent) 0%, var(--color-surface) 50%, color-mix(in srgb, var(--color-primary) 10%, transparent) 100%)`
+                background: glowGradient(12, 8),
+                borderColor: borderSoft(20),
+                boxShadow: shadowSoft('var(--color-primary)', 0.24)
               }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
             >
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-text-primary flex items-center gap-3">
@@ -1075,7 +1144,13 @@ export default function HomePage() {
             </div>
             
               {/* Прогноз на конец месяца */}
-              <div className="bg-background/60 border border-border rounded-2xl p-4">
+              <div 
+                className="border rounded-2xl p-4"
+                style={{
+                  background: surfaceSoft(20),
+                  borderColor: borderSoft(20)
+                }}
+              >
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-semibold text-text-primary">Прогноз на конец месяца</span>
                   <span className="text-xs text-text-secondary">На основе текущих трат</span>
@@ -1101,12 +1176,22 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-            </section>
+            </motion.section>
 
             {/* Круговая диаграмма и детали */}
             <section className="grid lg:grid-cols-[1fr_1.5fr] gap-6">
               {/* Круговая диаграмма расходов */}
-              <div className="bg-surface/80 border border-border rounded-3xl p-6 backdrop-blur-xl">
+              <motion.div 
+                className="border rounded-3xl p-6 backdrop-blur-xl"
+                style={{
+                  background: glowGradient(12, 8),
+                  borderColor: borderSoft(20),
+                  boxShadow: shadowSoft('var(--color-primary)', 0.24)
+                }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
                 <h3 className="text-lg font-semibold text-text-primary mb-6">Распределение расходов</h3>
                 <div className="relative w-48 h-48 mx-auto mb-6">
                   {/* Круговая диаграмма через SVG */}
@@ -1123,17 +1208,15 @@ export default function HomePage() {
                       <path
                         key={item.name}
                         d={item.path}
-                        fill={`url(#gradient-${item.idx})`}
+                        fill="url(#unified-gradient)"
                         opacity="0.8"
                       />
                     ))}
                     <defs>
-                      {financialData.categories.map((cat, idx) => (
-                        <linearGradient key={idx} id={`gradient-${idx}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor={cat.color.includes('orange') ? '#f97316' : cat.color.includes('blue') ? '#3b82f6' : cat.color.includes('pink') ? '#ec4899' : '#10b981'} />
-                          <stop offset="100%" stopColor={cat.color.includes('orange') ? '#ef4444' : cat.color.includes('blue') ? '#06b6d4' : cat.color.includes('pink') ? '#a855f7' : '#34d399'} />
-                        </linearGradient>
-                      ))}
+                      <linearGradient id="unified-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="var(--color-primary)" />
+                        <stop offset="100%" stopColor="var(--color-secondary)" />
+                      </linearGradient>
                     </defs>
                   </svg>
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -1175,11 +1258,21 @@ export default function HomePage() {
                     );
                   })}
                 </div>
-              </div>
+              </motion.div>
 
               {/* Детальная статистика */}
               <div className="space-y-6">
-                <div className="bg-surface/80 border border-border rounded-3xl p-6 backdrop-blur-xl">
+                <motion.div 
+                  className="border rounded-3xl p-6 backdrop-blur-xl"
+                  style={{
+                    background: glowGradient(12, 8),
+                    borderColor: borderSoft(20),
+                    boxShadow: shadowSoft('var(--color-primary)', 0.24)
+                  }}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                >
                   <h3 className="text-lg font-semibold text-text-primary mb-4">Тренд расходов (7 месяцев)</h3>
                   <div className="flex items-end gap-2 h-48 mb-4">
                     {financialData.monthlyTrend.map((value, index) => {
@@ -1203,8 +1296,8 @@ export default function HomePage() {
                               initial={{ height: 0 }}
                               animate={{ height: `${height}%` }}
                               transition={{ duration: 0.6, delay: 0.2 + index * 0.1, ease: "easeOut" }}
-                            />
-                          </div>
+        />
+      </div>
                           <span className="text-[10px] text-text-secondary mt-2">{index + 1}</span>
                           <div className="opacity-0 group-hover:opacity-100 transition-opacity mt-1">
                             <span className="text-[10px] text-text-primary font-semibold">{value.toLocaleString()}</span>
@@ -1213,14 +1306,15 @@ export default function HomePage() {
                       );
                     })}
                   </div>
-      </div>
+      </motion.div>
 
                 {/* Накопления и цели */}
                 <motion.div 
                   className="border rounded-3xl p-6 backdrop-blur-xl"
                   style={{
-                    background: `linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 10%, transparent) 0%, color-mix(in srgb, var(--color-secondary) 10%, transparent) 100%)`,
-                    borderColor: 'color-mix(in srgb, var(--color-primary) 20%, transparent)'
+                    background: glowGradient(12, 8),
+                    borderColor: borderSoft(20),
+                    boxShadow: shadowSoft('var(--color-primary)', 0.24)
                   }}
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -1277,7 +1371,17 @@ export default function HomePage() {
             </section>
 
             {/* История транзакций */}
-            <section className="bg-surface/80 border border-border rounded-3xl p-6 backdrop-blur-xl">
+            <motion.section 
+              className="border rounded-3xl p-6 backdrop-blur-xl"
+              style={{
+                background: glowGradient(12, 8),
+                borderColor: borderSoft(20),
+                boxShadow: shadowSoft('var(--color-primary)', 0.24)
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
                   <div style={{ color: 'var(--color-primary)' }}>
@@ -1325,10 +1429,20 @@ export default function HomePage() {
                   </div>
                 ))}
               </div>
-            </section>
+            </motion.section>
 
             {/* Бюджет по категориям */}
-            <section className="bg-surface/80 border border-border rounded-3xl p-6 backdrop-blur-xl">
+            <motion.section 
+              className="border rounded-3xl p-6 backdrop-blur-xl"
+              style={{
+                background: glowGradient(12, 8),
+                borderColor: borderSoft(20),
+                boxShadow: shadowSoft('var(--color-primary)', 0.24)
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
                   <div style={{ color: 'var(--color-secondary)' }}>
@@ -1391,14 +1505,19 @@ export default function HomePage() {
                   );
                 })}
               </div>
-            </section>
+            </motion.section>
 
             {/* Финансовые цели */}
-            <section 
-              className="border border-border rounded-3xl p-6 backdrop-blur-xl"
+            <motion.section 
+              className="border rounded-3xl p-6 backdrop-blur-xl"
               style={{
-                background: `linear-gradient(135deg, color-mix(in srgb, var(--color-warning) 10%, transparent) 0%, var(--color-surface) 50%, color-mix(in srgb, var(--color-warning) 10%, transparent) 100%)`
+                background: glowGradient(12, 8),
+                borderColor: borderSoft(20),
+                boxShadow: shadowSoft('var(--color-primary)', 0.24)
               }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
             >
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
@@ -1443,10 +1562,20 @@ export default function HomePage() {
                   );
                 })}
               </div>
-            </section>
+            </motion.section>
 
             {/* Подписки и регулярные платежи */}
-            <section className="bg-surface/80 border border-border rounded-3xl p-6 backdrop-blur-xl">
+            <motion.section 
+              className="border rounded-3xl p-6 backdrop-blur-xl"
+              style={{
+                background: glowGradient(12, 8),
+                borderColor: borderSoft(20),
+                boxShadow: shadowSoft('var(--color-primary)', 0.24)
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
                   <div style={{ color: 'var(--color-secondary)' }}>
@@ -1486,10 +1615,20 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-            </section>
+            </motion.section>
 
             {/* Сравнение доходов и расходов */}
-            <section className="bg-surface/80 border border-border rounded-3xl p-6 backdrop-blur-xl">
+            <motion.section 
+              className="border rounded-3xl p-6 backdrop-blur-xl"
+              style={{
+                background: glowGradient(12, 8),
+                borderColor: borderSoft(20),
+                boxShadow: shadowSoft('var(--color-primary)', 0.24)
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
               <h3 className="text-lg font-semibold text-text-primary mb-6 flex items-center gap-2">
                 <div style={{ color: 'var(--color-success)' }}>
                   {React.createElement(HiOutlineTrendingUp as any)}
@@ -1547,18 +1686,23 @@ export default function HomePage() {
                   );
                 })}
               </div>
-            </section>
+            </motion.section>
           </div>
         )}
 
         {/* Канбан-доска для задач */}
-        {activeTab === 'tasks' && (
+        {activeSection === 'project' && projectTab === 'tasks' && (
           <div className="space-y-6">
-            <section 
-              className="border border-border rounded-3xl p-6 sm:p-8 backdrop-blur-xl"
+            <motion.section 
+              className="border rounded-3xl p-6 sm:p-8 backdrop-blur-xl"
               style={{
-                background: `linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 10%, transparent) 0%, var(--color-surface) 50%, color-mix(in srgb, var(--color-secondary) 10%, transparent) 100%)`
+                background: glowGradient(12, 8),
+                borderColor: borderSoft(20),
+                boxShadow: shadowSoft('var(--color-primary)', 0.24)
               }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
             >
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-text-primary flex items-center gap-3">
@@ -1577,7 +1721,13 @@ export default function HomePage() {
 
               {/* Статистика */}
               <div className="grid grid-cols-4 gap-4 mb-6">
-                <div className="bg-background/60 border border-border rounded-xl p-3 text-center">
+                <div 
+                  className="border rounded-xl p-3 text-center"
+                  style={{
+                    background: surfaceSoft(20),
+                    borderColor: borderSoft(20)
+                  }}
+                >
                   <p className="text-2xl font-bold text-text-primary">{taskStats.total}</p>
                   <p className="text-xs text-text-secondary">Всего</p>
                 </div>
@@ -1616,7 +1766,13 @@ export default function HomePage() {
               {/* Канбан колонки */}
               <div className="grid md:grid-cols-4 gap-4">
                 {/* Сделать */}
-                <div className="bg-background/60 border border-border rounded-2xl p-4">
+                <div 
+                  className="border rounded-2xl p-4"
+                  style={{
+                    background: surfaceSoft(20),
+                    borderColor: borderSoft(20)
+                  }}
+                >
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wide">Сделать</h3>
                     <span className="text-xs text-text-secondary bg-surface px-2 py-1 rounded-full">
@@ -1627,8 +1783,9 @@ export default function HomePage() {
                     {taskStats.highPriority.map((task) => (
                       <div
                         key={task.id}
-                        className="bg-surface/80 border rounded-xl p-3 hover:shadow-lg transition-all cursor-pointer"
+                        className="border rounded-xl p-3 hover:shadow-lg transition-all cursor-pointer"
                         style={{
+                          background: surfaceSoft(20),
                           borderColor: 'color-mix(in srgb, var(--color-error) 30%, transparent)'
                         }}
                       >
@@ -1663,8 +1820,9 @@ export default function HomePage() {
                     {taskStats.mediumPriority.map((task) => (
                       <div
                         key={task.id}
-                        className="bg-surface/80 border rounded-xl p-3 hover:shadow-lg transition-all cursor-pointer"
+                        className="border rounded-xl p-3 hover:shadow-lg transition-all cursor-pointer"
                         style={{
+                          background: surfaceSoft(20),
                           borderColor: 'color-mix(in srgb, var(--color-warning) 30%, transparent)'
                         }}
                       >
@@ -1699,8 +1857,9 @@ export default function HomePage() {
                     {taskStats.lowPriority.map((task) => (
                       <div
                         key={task.id}
-                        className="bg-surface/80 border rounded-xl p-3 hover:shadow-lg transition-all cursor-pointer"
+                        className="border rounded-xl p-3 hover:shadow-lg transition-all cursor-pointer"
                         style={{
+                          background: surfaceSoft(20),
                           borderColor: 'color-mix(in srgb, var(--color-success) 30%, transparent)'
                         }}
                       >
@@ -1736,15 +1895,22 @@ export default function HomePage() {
                 </div>
 
                 {/* В процессе */}
-                <div className="bg-background/60 border border-border rounded-2xl p-4">
+                <div 
+                  className="border rounded-2xl p-4"
+                  style={{
+                    background: surfaceSoft(20),
+                    borderColor: borderSoft(20)
+                  }}
+                >
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wide">В процессе</h3>
                     <span className="text-xs text-text-secondary bg-surface px-2 py-1 rounded-full">1</span>
                   </div>
                   <div className="space-y-3">
                     <div 
-                      className="bg-surface/80 border rounded-xl p-3"
+                      className="border rounded-xl p-3"
                       style={{
+                        background: surfaceSoft(20),
                         borderColor: 'color-mix(in srgb, var(--color-primary) 30%, transparent)'
                       }}
                     >
@@ -1779,20 +1945,38 @@ export default function HomePage() {
           </div>
 
                 {/* На проверке */}
-                <div className="bg-background/60 border border-border rounded-2xl p-4">
+                <div 
+                  className="border rounded-2xl p-4"
+                  style={{
+                    background: surfaceSoft(20),
+                    borderColor: borderSoft(20)
+                  }}
+                >
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wide">На проверке</h3>
                     <span className="text-xs text-text-secondary bg-surface px-2 py-1 rounded-full">0</span>
             </div>
                   <div className="space-y-3">
-                    <div className="bg-surface/40 border border-border rounded-xl p-3 text-center">
+                    <div 
+                      className="border rounded-xl p-3 text-center"
+                      style={{
+                        background: surfaceSoft(26),
+                        borderColor: borderSoft(20)
+                      }}
+                    >
                       <p className="text-xs text-text-secondary">Нет задач</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Готово */}
-                <div className="bg-background/60 border border-border rounded-2xl p-4">
+                <div 
+                  className="border rounded-2xl p-4"
+                  style={{
+                    background: surfaceSoft(20),
+                    borderColor: borderSoft(20)
+                  }}
+                >
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wide">Готово</h3>
                     <span className="text-xs text-text-secondary bg-surface px-2 py-1 rounded-full">
@@ -1832,22 +2016,32 @@ export default function HomePage() {
                               >
                                 Выполнено
                               </span>
-                            </div>
-                          </div>
-                        </div>
+                  </div>
+                </div>
+            </div>
                         <div className="flex items-center justify-between text-xs text-text-secondary">
                           <span>{task.category}</span>
                           <span>{task.deadline}</span>
-                        </div>
+          </div>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
-            </section>
+            </motion.section>
 
             {/* Продуктивность */}
-            <section className="bg-surface/80 border border-border rounded-3xl p-6 backdrop-blur-xl">
+            <motion.section 
+              className="border rounded-3xl p-6 backdrop-blur-xl"
+              style={{
+                background: glowGradient(12, 8),
+                borderColor: borderSoft(20),
+                boxShadow: shadowSoft('var(--color-primary)', 0.24)
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
               <h3 className="text-lg font-semibold text-text-primary mb-4">Продуктивность по дням</h3>
               <div className="flex items-end gap-2 h-32">
                 {[3, 5, 4, 6, 5, 7, 4, 5, 6, 5, 4, 6, 5, 3].map((value, index) => (
@@ -1861,23 +2055,28 @@ export default function HomePage() {
                       }}
                     />
                     <span className="text-[10px] text-text-secondary mt-1">{index + 1}</span>
-                  </div>
+            </div>
                 ))}
               </div>
               <p className="text-xs text-text-secondary mt-4 text-center">Выполнено задач за последние 14 дней</p>
-            </section>
+            </motion.section>
           </div>
         )}
 
         {/* Календарь событий - улучшенная версия */}
-        {activeTab === 'calendar' && (
+        {activeSection === 'project' && projectTab === 'calendar' && (
           <div className="space-y-6">
             {/* Заголовок и переключатель вида */}
-            <section 
-              className="border border-border rounded-3xl p-6 sm:p-8 backdrop-blur-xl"
+            <motion.section 
+              className="border rounded-3xl p-6 sm:p-8 backdrop-blur-xl"
               style={{
-                background: `linear-gradient(135deg, color-mix(in srgb, var(--color-secondary) 10%, transparent) 0%, var(--color-surface) 50%, color-mix(in srgb, var(--color-primary) 10%, transparent) 100%)`
+                background: glowGradient(12, 8),
+                borderColor: borderSoft(20),
+                boxShadow: shadowSoft('var(--color-primary)', 0.24)
               }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
             >
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <h2 className="text-2xl font-bold text-text-primary flex items-center gap-3">
@@ -1954,7 +2153,13 @@ export default function HomePage() {
       </div>
 
               {/* Месячный календарь */}
-              <div className="bg-background/60 border border-border rounded-2xl p-4">
+              <div 
+                className="border rounded-2xl p-4"
+                style={{
+                  background: surfaceSoft(20),
+                  borderColor: borderSoft(20)
+                }}
+              >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-text-primary">Август 2025</h3>
                   <div className="flex gap-2">
@@ -2029,11 +2234,21 @@ export default function HomePage() {
                   })}
                 </div>
               </div>
-            </section>
+            </motion.section>
 
             {/* Статистика времени */}
             <section className="grid md:grid-cols-3 gap-4">
-              <div className="bg-surface/80 border border-border rounded-2xl p-4 backdrop-blur-xl">
+              <motion.div 
+                className="border rounded-2xl p-4 backdrop-blur-xl"
+                style={{
+                  background: glowGradient(12, 8),
+                  borderColor: borderSoft(20),
+                  boxShadow: shadowSoft('var(--color-primary)', 0.18)
+                }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.1 }}
+              >
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-sm text-text-secondary">Рабочие часы</span>
                   <div style={{ color: 'var(--color-primary)' }}>
@@ -2042,8 +2257,18 @@ export default function HomePage() {
                 </div>
                 <p className="text-2xl font-bold text-text-primary mb-1">42 ч</p>
                 <p className="text-xs text-text-secondary">В этом месяце</p>
-              </div>
-              <div className="bg-surface/80 border border-border rounded-2xl p-4 backdrop-blur-xl">
+              </motion.div>
+              <motion.div 
+                className="border rounded-2xl p-4 backdrop-blur-xl"
+                style={{
+                  background: glowGradient(12, 8),
+                  borderColor: borderSoft(20),
+                  boxShadow: shadowSoft('var(--color-primary)', 0.18)
+                }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+              >
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-sm text-text-secondary">События</span>
                   <div style={{ color: 'var(--color-secondary)' }}>
@@ -2052,8 +2277,18 @@ export default function HomePage() {
                 </div>
                 <p className="text-2xl font-bold text-text-primary mb-1">{calendarEvents.length}</p>
                 <p className="text-xs text-text-secondary">Запланировано</p>
-              </div>
-              <div className="bg-surface/80 border border-border rounded-2xl p-4 backdrop-blur-xl">
+              </motion.div>
+              <motion.div 
+                className="border rounded-2xl p-4 backdrop-blur-xl"
+                style={{
+                  background: glowGradient(12, 8),
+                  borderColor: borderSoft(20),
+                  boxShadow: shadowSoft('var(--color-primary)', 0.18)
+                }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.3 }}
+              >
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-sm text-text-secondary">Свободное время</span>
                   <div style={{ color: 'var(--color-success)' }}>
@@ -2062,14 +2297,24 @@ export default function HomePage() {
                 </div>
                 <p className="text-2xl font-bold text-text-primary mb-1">18 ч</p>
                 <p className="text-xs text-text-secondary">На этой неделе</p>
-              </div>
+              </motion.div>
             </section>
           </div>
         )}
 
         {/* Мотивация: Стрики и достижения */}
         <section className="grid md:grid-cols-2 gap-6">
-          <div className="bg-surface/80 border border-border rounded-3xl p-6 backdrop-blur-xl">
+          <motion.div 
+            className="border rounded-3xl p-6 backdrop-blur-xl"
+            style={{
+              background: glowGradient(12, 8),
+              borderColor: borderSoft(20),
+              boxShadow: shadowSoft('var(--color-primary)', 0.24)
+            }}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
               <div style={{ color: 'var(--color-warning)' }}>
                 {React.createElement(HiOutlineLightningBolt as any)}
@@ -2078,7 +2323,14 @@ export default function HomePage() {
             </h3>
             <div className="space-y-3">
               {streaks.map((streak) => (
-                <div key={streak.habit} className="bg-background/75 border border-border rounded-xl p-3">
+                <div 
+                  key={streak.habit} 
+                  className="border rounded-xl p-3"
+                  style={{
+                    background: surfaceSoft(20),
+                    borderColor: borderSoft(20)
+                  }}
+                >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span className="text-xl">{streak.icon}</span>
@@ -2092,9 +2344,19 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          <div className="bg-surface/80 border border-border rounded-3xl p-6 backdrop-blur-xl">
+          <motion.div 
+            className="border rounded-3xl p-6 backdrop-blur-xl"
+            style={{
+              background: glowGradient(12, 8),
+              borderColor: borderSoft(20),
+              boxShadow: shadowSoft('var(--color-primary)', 0.24)
+            }}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
             <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
               <div style={{ color: 'var(--color-warning)' }}>
                 {React.createElement(HiOutlineStar as any)}
@@ -2105,13 +2367,14 @@ export default function HomePage() {
               {achievements.map((achievement, idx) => (
                 <div
                   key={idx}
-                  className={`bg-background/75 border rounded-xl p-3 ${
+                  className={`border rounded-xl p-3 ${
                     achievement.unlocked ? '' : 'opacity-50'
                   }`}
                   style={{
+                    background: surfaceSoft(20),
                     borderColor: achievement.unlocked 
-                      ? 'color-mix(in srgb, var(--color-warning) 50%, transparent)' 
-                      : 'var(--color-border)'
+                      ? 'color-mix(in srgb, var(--color-warning) 30%, transparent)' 
+                      : borderSoft(20)
                   }}
                 >
                   <div className="flex items-center gap-3">
@@ -2131,11 +2394,21 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </section>
 
         {/* Трекинг времени */}
-        <section className="bg-surface/80 border border-border rounded-3xl p-6 backdrop-blur-xl">
+        <motion.section 
+          className="border rounded-3xl p-6 backdrop-blur-xl"
+          style={{
+            background: glowGradient(12, 8),
+            borderColor: borderSoft(20),
+            boxShadow: shadowSoft('var(--color-primary)', 0.24)
+          }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
               <div style={{ color: 'var(--color-primary)' }}>
@@ -2147,7 +2420,14 @@ export default function HomePage() {
           </div>
           <div className="grid md:grid-cols-2 gap-4">
             {timeTracking.map((track) => (
-              <div key={track.category} className="bg-background/75 border border-border rounded-xl p-4">
+              <div 
+                key={track.category} 
+                className="border rounded-xl p-4"
+                style={{
+                  background: surfaceSoft(20),
+                  borderColor: borderSoft(20)
+                }}
+              >
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-sm font-semibold text-text-primary">{track.category}</span>
                   <span className="text-sm text-text-secondary">
@@ -2171,7 +2451,231 @@ export default function HomePage() {
       </div>
             ))}
       </div>
-        </section>
+        </motion.section>
+
+        {/* ИИ-ассистент */}
+        {activeSection === 'ai-assistant' && (
+          <div className="space-y-6">
+            <motion.section 
+              className="border rounded-3xl p-6 sm:p-8 backdrop-blur-xl"
+              style={{
+                background: glowGradient(12, 8),
+                borderColor: borderSoft(20),
+                boxShadow: shadowSoft('var(--color-primary)', 0.24)
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h2 className="text-2xl font-bold text-text-primary mb-6">ИИ-ассистент</h2>
+              
+              <div className="space-y-4">
+                <motion.div 
+                  className="border rounded-2xl p-6"
+                  style={{
+                    background: surfaceSoft(20),
+                    borderColor: borderSoft(20)
+                  }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.1 }}
+                >
+                  <h3 className="text-lg font-semibold text-text-primary mb-2">Подсказки по планированию</h3>
+                  <p className="text-sm text-text-secondary">Получайте умные рекомендации по планированию вашего дня</p>
+                </motion.div>
+
+                <motion.div 
+                  className="border rounded-2xl p-6"
+                  style={{
+                    background: surfaceSoft(20),
+                    borderColor: borderSoft(20)
+                  }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.2 }}
+                >
+                  <h3 className="text-lg font-semibold text-text-primary mb-2">Автоматическая оптимизация задач</h3>
+                  <p className="text-sm text-text-secondary">ИИ поможет оптимизировать ваши задачи для максимальной эффективности</p>
+                </motion.div>
+
+                <motion.div 
+                  className="border rounded-2xl p-6"
+                  style={{
+                    background: surfaceSoft(20),
+                    borderColor: borderSoft(20)
+                  }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.3 }}
+                >
+                  <h3 className="text-lg font-semibold text-text-primary mb-2">Финансовые рекомендации</h3>
+                  <p className="text-sm text-text-secondary">Персонализированные советы по управлению финансами</p>
+                </motion.div>
+
+                <motion.div 
+                  className="border rounded-2xl p-6"
+                  style={{
+                    background: surfaceSoft(20),
+                    borderColor: borderSoft(20)
+                  }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.4 }}
+                >
+                  <h3 className="text-lg font-semibold text-text-primary mb-2">Генерация отчётов и советов</h3>
+                  <p className="text-sm text-text-secondary">Автоматическое создание отчётов и полезных советов на основе ваших данных</p>
+                </motion.div>
+            </div>
+            </motion.section>
+        </div>
+        )}
+
+        {/* Интеграции */}
+        {activeSection === 'integrations' && (
+          <div className="space-y-6">
+            <motion.section 
+              className="border rounded-3xl p-6 sm:p-8 backdrop-blur-xl"
+              style={{
+                background: glowGradient(12, 8),
+                borderColor: borderSoft(20),
+                boxShadow: shadowSoft('var(--color-primary)', 0.24)
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h2 className="text-2xl font-bold text-text-primary mb-6">Интеграции</h2>
+              
+              <div className="space-y-4">
+                <motion.div 
+                  className="border rounded-2xl p-6"
+                  style={{
+                    background: surfaceSoft(20),
+                    borderColor: borderSoft(20)
+                  }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.1 }}
+                >
+                  <h3 className="text-lg font-semibold text-text-primary mb-2">Подключение внешних приложений</h3>
+                  <p className="text-sm text-text-secondary">Подключите ваши любимые приложения для синхронизации данных</p>
+                </motion.div>
+
+                <motion.div 
+                  className="border rounded-2xl p-6"
+                  style={{
+                    background: surfaceSoft(20),
+                    borderColor: borderSoft(20)
+                  }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.2 }}
+                >
+                  <h3 className="text-lg font-semibold text-text-primary mb-2">API ключи, webhooks</h3>
+                  <p className="text-sm text-text-secondary">Настройте API ключи и webhooks для интеграции с внешними сервисами</p>
+                </motion.div>
+
+                <motion.div 
+                  className="border rounded-2xl p-6"
+                  style={{
+                    background: surfaceSoft(20),
+                    borderColor: borderSoft(20)
+                  }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.3 }}
+                >
+                  <h3 className="text-lg font-semibold text-text-primary mb-2">Визуальная панель подключений</h3>
+                  <p className="text-sm text-text-secondary">Управляйте всеми подключениями в одном месте</p>
+                </motion.div>
+      </div>
+            </motion.section>
+      </div>
+        )}
+
+        {/* Аналитика */}
+        {activeSection === 'analytics' && (
+          <div className="space-y-6">
+            <motion.section 
+              className="border rounded-3xl p-6 sm:p-8 backdrop-blur-xl"
+              style={{
+                background: glowGradient(12, 8),
+                borderColor: borderSoft(20),
+                boxShadow: shadowSoft('var(--color-primary)', 0.24)
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h2 className="text-2xl font-bold text-text-primary mb-6">Аналитика</h2>
+              
+              <div className="space-y-4">
+                <motion.div 
+                  className="border rounded-2xl p-6"
+                  style={{
+                    background: surfaceSoft(20),
+                    borderColor: borderSoft(20)
+                  }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.1 }}
+                >
+                  <h3 className="text-lg font-semibold text-text-primary mb-2">Графики прогресса по привычкам</h3>
+                  <p className="text-sm text-text-secondary">Визуализация вашего прогресса в формировании привычек с течением времени</p>
+                </motion.div>
+
+                <motion.div 
+                  className="border rounded-2xl p-6"
+                  style={{
+                    background: surfaceSoft(20),
+                    borderColor: borderSoft(20)
+                  }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.2 }}
+                >
+                  <h3 className="text-lg font-semibold text-text-primary mb-2">Анализ продуктивности</h3>
+                  <p className="text-sm text-text-secondary">Детальный анализ вашей продуктивности и эффективности работы</p>
+                </motion.div>
+
+                <motion.div 
+                  className="border rounded-2xl p-6"
+                  style={{
+                    background: surfaceSoft(20),
+                    borderColor: borderSoft(20)
+                  }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.3 }}
+                >
+                  <h3 className="text-lg font-semibold text-text-primary mb-2">Финансовые отчёты (сравнение периодов)</h3>
+                  <p className="text-sm text-text-secondary">Сравнение финансовых показателей за разные периоды времени</p>
+                </motion.div>
+              </div>
+            </motion.section>
+          </div>
+        )}
+
+        {/* Настройки */}
+        {activeSection === 'settings' && (
+          <div className="space-y-6">
+            <motion.section 
+              className="border rounded-3xl p-6 sm:p-8 backdrop-blur-xl"
+              style={{
+                background: glowGradient(12, 8),
+                borderColor: borderSoft(20),
+                boxShadow: shadowSoft('var(--color-primary)', 0.24)
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h2 className="text-2xl font-bold text-text-primary mb-6">Настройки</h2>
+              <p className="text-text-secondary">Настройки приложения</p>
+            </motion.section>
+          </div>
+        )}
+
       </div>
     </div>
   );

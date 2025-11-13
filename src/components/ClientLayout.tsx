@@ -16,7 +16,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         <Suspense fallback={<div className="flex items-center justify-center h-full"><div className="text-text-secondary">Загрузка...</div></div>}>
           {children}
         </Suspense>
-      </main>
+        </main>
       <BottomNavigationBar />
     </div>
   );
